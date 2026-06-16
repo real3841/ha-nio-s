@@ -233,5 +233,11 @@
       "refresh": { "name": "数据刷新" },
       "refresh_change": { "name": "刷新服务订单" }
     }
+  },
+  "services": {
+    "refresh_change_orders": {
+      "name": "刷新服务订单",
+      "description": "立即请求蔚来 getTabOrder 换电/服务订单接口。"
+    }
   }
 }

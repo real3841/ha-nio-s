@@ -7,7 +7,8 @@ from pathlib import Path
 from homeassistant.components.frontend import add_extra_js_url
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.const import Platform
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.loader import async_get_integration
 
@@ -110,9 +111,39 @@ async def _async_setup_change_entry(
     await coordinator.async_config_entry_first_refresh()
 
     entry.runtime_data = coordinator
+    _async_register_change_services(hass)
     await hass.config_entries.async_forward_entry_setups(entry, CHANGE_PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     return True
+
+
+def _async_register_change_services(hass: HomeAssistant) -> None:
+    """Register one-shot services for manual change-order refresh."""
+    if hass.data.setdefault(DOMAIN, {}).get("change_services_registered"):
+        return
+
+    async def async_refresh_change_orders(call: ServiceCall) -> None:
+        entry_id = call.data.get("entry_id")
+        refreshed = 0
+        for cfg in hass.config_entries.async_entries(DOMAIN):
+            if cfg.data.get(CONF_ENTRY_TYPE) != ENTRY_TYPE_CHANGE:
+                continue
+            if entry_id and cfg.entry_id != entry_id:
+                continue
+            coordinator = cfg.runtime_data
+            if coordinator is None:
+                continue
+            await coordinator.async_refresh()
+            refreshed += 1
+        if refreshed == 0:
+            raise ServiceValidationError("No NIO change / service-order config entry found")
+
+    hass.services.async_register(
+        DOMAIN,
+        "refresh_change_orders",
+        async_refresh_change_orders,
+    )
+    hass.data[DOMAIN]["change_services_registered"] = True
 
 
 async def async_migrate_entry(hass: HomeAssistant, entry: NioConfigEntry) -> bool:

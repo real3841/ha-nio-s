@@ -225,5 +225,11 @@
       "refresh": { "name": "Refresh data" },
       "refresh_change": { "name": "Refresh service orders" }
     }
+  },
+  "services": {
+    "refresh_change_orders": {
+      "name": "Refresh service orders",
+      "description": "Immediately poll the NIO getTabOrder API."
+    }
   }
 }

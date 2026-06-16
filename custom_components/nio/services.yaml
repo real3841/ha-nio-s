@@ -1,0 +1,10 @@
+refresh_change_orders:
+  name: Refresh service orders
+  description: Immediately poll the NIO getTabOrder API for all change entries.
+  fields:
+    entry_id:
+      name: Config entry ID
+      description: Optional. Refresh only this change config entry.
+      required: false
+      selector:
+        text:
