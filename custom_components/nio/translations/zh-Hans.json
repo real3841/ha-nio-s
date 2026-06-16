@@ -30,13 +30,17 @@
           "capture": "getTabOrder 请求 URL",
           "token": "Bearer Token",
           "change_name": "显示名称",
-          "cookie": "Cookie（可选）",
+          "cookie": "Cookie（必填）",
+          "change_user_agent": "User-Agent（可选）",
+          "change_mobileinfo": "mobileinfo（可选）",
           "change_method": "HTTP 方法"
         },
         "data_description": {
           "capture": "粘贴 gateway-front-external.nio.com/.../getTabOrder?... 完整 URL",
           "token": "粘贴 Authorization 头里的 Bearer token",
-          "cookie": "若抓包含 tgw_l7_route=... 请填写"
+          "cookie": "从 Postman Headers 复制 Cookie，通常含 tgw_l7_route=...",
+          "change_user_agent": "若 Postman 有 User-Agent 请求头，请原样粘贴",
+          "change_mobileinfo": "若 Postman 有 mobileinfo 请求头，请原样粘贴"
         }
       },
       "reauth_confirm": {
@@ -54,6 +58,7 @@
       "invalid_sign": "NIO API 拒绝的是签名、不是 token——请重新抓一次当前的状态请求。",
       "invalid_url": "无法识别为车辆状态请求。请把包含 /vehicle/.../status?...&sign=... 的整行粘进来。",
       "invalid_change_url": "无法识别为服务订单请求。请粘贴带 query 参数的 getTabOrder URL。",
+      "empty_orders": "接口已连通但返回 0 条订单。请检查 Cookie（Postman 里的 tgw_l7_route=...）、URL 和 Token 是否与抓包一致。",
       "cannot_connect": "无法连接 NIO API。"
     },
     "abort": {

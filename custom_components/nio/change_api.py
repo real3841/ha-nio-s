@@ -12,9 +12,23 @@ from typing import Any
 import aiohttp
 from yarl import URL
 
+from .change_data import extract_orders
 from .const import DEFAULT_CHANGE_METHOD
 
 _LOGGER = logging.getLogger(__name__)
+
+# Headers commonly present in Postman captures for getTabOrder.
+_DEFAULT_HEADERS: dict[str, str] = {
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "zh-CN,zh-Hans;q=0.9",
+    "Content-Type": "application/json",
+    "Connection": "keep-alive",
+    "Origin": "null",
+    "Priority": "u=3, i",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "cross-site",
+}
 
 
 class NioChangeApiError(Exception):
@@ -36,17 +50,20 @@ class NioChangeApiClient:
         url: str,
         method: str = DEFAULT_CHANGE_METHOD,
         cookie: str | None = None,
+        user_agent: str | None = None,
+        mobileinfo: str | None = None,
     ) -> None:
         self._session = session
         self._url = URL(url, encoded=True)
         self._method = method.upper()
         self._headers: dict[str, str] = {
-            "Accept": "application/json, text/plain, */*",
-            "Accept-Language": "zh-CN,zh-Hans;q=0.9",
+            **_DEFAULT_HEADERS,
             "Authorization": f"Bearer {token}",
         }
-        if self._method not in ("GET", "HEAD"):
-            self._headers.setdefault("Content-Type", "application/json")
+        if user_agent:
+            self._headers["User-Agent"] = user_agent
+        if mobileinfo:
+            self._headers["mobileinfo"] = mobileinfo
         if cookie:
             self._headers["Cookie"] = cookie
 
@@ -74,6 +91,18 @@ class NioChangeApiClient:
 
         code = payload.get("resultCode") or payload.get("result_code")
         if code in ("0000", "success"):
+            count = len(extract_orders(payload))
+            _LOGGER.debug(
+                "NIO change API ok (HTTP %s, resultCode=%s, orders=%s)",
+                status,
+                code,
+                count,
+            )
+            if count == 0:
+                _LOGGER.warning(
+                    "NIO change API returned 0 orders — check Cookie / URL capture "
+                    "(Postman often needs tgw_l7_route=... Cookie plus User-Agent)"
+                )
             return payload
 
         desc = (

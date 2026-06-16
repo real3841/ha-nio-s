@@ -18,7 +18,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .change_coordinator import NioChangeConfigEntry, NioChangeDataUpdateCoordinator
-from .change_data import ServiceSummary
+from .change_data import ServiceSummary, extract_orders
 from .change_entity import NioChangeEntity
 from .const import CONF_ENTRY_TYPE, ENTRY_TYPE_CHANGE
 
@@ -130,3 +130,13 @@ class NioChangeSensor(NioChangeEntity, SensorEntity):
     @property
     def native_value(self) -> Any:
         return self.entity_description.value_fn(_summary(self.coordinator))
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        if self.entity_description.key != "service_orders_total":
+            return None
+        payload = self.coordinator.data or {}
+        return {
+            "api_result_code": payload.get("resultCode") or payload.get("result_code"),
+            "raw_order_count": len(extract_orders(payload)),
+        }

@@ -27,6 +27,8 @@ CONF_CHANGE_URL = "change_url"
 CONF_CHANGE_METHOD = "change_method"
 CONF_COOKIE = "cookie"
 CONF_CHANGE_NAME = "change_name"
+CONF_CHANGE_USER_AGENT = "change_user_agent"
+CONF_CHANGE_MOBILEINFO = "change_mobileinfo"
 
 # --- Legacy v1 data keys (per-field). Read only by the migration in __init__. ---
 CONF_DEVICE_ID = "device_id"

@@ -34,10 +34,13 @@ from .api import NioApiClient, NioApiError, NioAuthError, NioSignError
 from .capture import parse_capture
 from .change_api import NioChangeApiClient, NioChangeApiError, NioChangeAuthError
 from .change_capture import change_unique_id, parse_change_capture
+from .change_data import extract_orders
 from .const import (
     CONF_CHANGE_METHOD,
+    CONF_CHANGE_MOBILEINFO,
     CONF_CHANGE_NAME,
     CONF_CHANGE_URL,
+    CONF_CHANGE_USER_AGENT,
     CONF_COOKIE,
     CONF_ENTRY_TYPE,
     CONF_MODEL,
@@ -98,7 +101,9 @@ CHANGE_SCHEMA = vol.Schema(
         vol.Required(CONF_CAPTURE): _capture_box(),
         vol.Required(CONF_TOKEN): _secret(),
         vol.Optional(CONF_CHANGE_NAME, default="NIO 换电记录"): _text_box(),
-        vol.Optional(CONF_COOKIE, default=""): _text_box(),
+        vol.Required(CONF_COOKIE): _text_box(),
+        vol.Optional(CONF_CHANGE_USER_AGENT, default=""): _text_box(),
+        vol.Optional(CONF_CHANGE_MOBILEINFO, default=""): _text_box(),
         vol.Optional(
             CONF_CHANGE_METHOD,
             default=DEFAULT_CHANGE_METHOD,
@@ -136,7 +141,14 @@ async def _async_validate_vehicle(
 
 
 async def _async_validate_change(
-    hass: HomeAssistant, *, token: str, url: str, method: str, cookie: str | None
+    hass: HomeAssistant,
+    *,
+    token: str,
+    url: str,
+    method: str,
+    cookie: str | None,
+    user_agent: str | None = None,
+    mobileinfo: str | None = None,
 ) -> str | None:
     client = NioChangeApiClient(
         async_get_clientsession(hass),
@@ -144,13 +156,17 @@ async def _async_validate_change(
         url=url,
         method=method,
         cookie=cookie or None,
+        user_agent=user_agent or None,
+        mobileinfo=mobileinfo or None,
     )
     try:
-        await client.async_get_orders()
+        payload = await client.async_get_orders()
     except NioChangeAuthError:
         return "invalid_auth"
     except NioChangeApiError:
         return "cannot_connect"
+    if not extract_orders(payload):
+        return "empty_orders"
     return None
 
 
@@ -168,9 +184,37 @@ def _change_credentials_schema(entry: ConfigEntry) -> vol.Schema:
         {
             vol.Required(CONF_TOKEN, default=entry.data.get(CONF_TOKEN, "")): _secret(),
             vol.Optional(CONF_CAPTURE, default=""): _capture_box(),
-            vol.Optional(CONF_COOKIE, default=entry.data.get(CONF_COOKIE, "")): _text_box(),
+            vol.Required(CONF_COOKIE, default=entry.data.get(CONF_COOKIE, "")): _text_box(),
+            vol.Optional(
+                CONF_CHANGE_USER_AGENT,
+                default=entry.data.get(CONF_CHANGE_USER_AGENT, ""),
+            ): _text_box(),
+            vol.Optional(
+                CONF_CHANGE_MOBILEINFO,
+                default=entry.data.get(CONF_CHANGE_MOBILEINFO, ""),
+            ): _text_box(),
         }
     )
+
+
+def _change_entry_data(
+    user_input: dict[str, Any], *, url: str, method: str, token: str
+) -> dict[str, Any]:
+    data: dict[str, Any] = {
+        CONF_ENTRY_TYPE: ENTRY_TYPE_CHANGE,
+        CONF_TOKEN: token,
+        CONF_CHANGE_URL: url,
+        CONF_CHANGE_METHOD: method,
+        CONF_CHANGE_NAME: (user_input.get(CONF_CHANGE_NAME) or "NIO 换电记录").strip(),
+        CONF_COOKIE: (user_input.get(CONF_COOKIE) or "").strip(),
+    }
+    ua = (user_input.get(CONF_CHANGE_USER_AGENT) or "").strip()
+    mi = (user_input.get(CONF_CHANGE_MOBILEINFO) or "").strip()
+    if ua:
+        data[CONF_CHANGE_USER_AGENT] = ua
+    if mi:
+        data[CONF_CHANGE_MOBILEINFO] = mi
+    return data
 
 
 class NioConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -228,9 +272,11 @@ class NioConfigFlow(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
         if user_input is not None:
             token = _clean(user_input[CONF_TOKEN])
-            name = (user_input.get(CONF_CHANGE_NAME) or "NIO 换电记录").strip()
             cookie = (user_input.get(CONF_COOKIE) or "").strip() or None
+            user_agent = (user_input.get(CONF_CHANGE_USER_AGENT) or "").strip() or None
+            mobileinfo = (user_input.get(CONF_CHANGE_MOBILEINFO) or "").strip() or None
             method = user_input.get(CONF_CHANGE_METHOD, DEFAULT_CHANGE_METHOD)
+            name = (user_input.get(CONF_CHANGE_NAME) or "NIO 换电记录").strip()
             try:
                 url, captured_method = parse_change_capture(user_input[CONF_CAPTURE])
             except ValueError:
@@ -247,18 +293,15 @@ class NioConfigFlow(ConfigFlow, domain=DOMAIN):
                     url=url,
                     method=method,
                     cookie=cookie,
+                    user_agent=user_agent,
+                    mobileinfo=mobileinfo,
                 )
                 if error is None:
                     return self.async_create_entry(
                         title=name,
-                        data={
-                            CONF_ENTRY_TYPE: ENTRY_TYPE_CHANGE,
-                            CONF_TOKEN: token,
-                            CONF_CHANGE_URL: url,
-                            CONF_CHANGE_METHOD: method,
-                            CONF_CHANGE_NAME: name,
-                            **({CONF_COOKIE: cookie} if cookie else {}),
-                        },
+                        data=_change_entry_data(
+                            user_input, url=url, method=method, token=token
+                        ),
                     )
                 errors["base"] = error
 
@@ -290,6 +333,8 @@ class NioConfigFlow(ConfigFlow, domain=DOMAIN):
                         url=data[CONF_CHANGE_URL],
                         method=data.get(CONF_CHANGE_METHOD, DEFAULT_CHANGE_METHOD),
                         cookie=data.get(CONF_COOKIE),
+                        user_agent=data.get(CONF_CHANGE_USER_AGENT),
+                        mobileinfo=data.get(CONF_CHANGE_MOBILEINFO),
                     )
             else:
                 data, error = self._apply_vehicle_credentials(entry, user_input)
@@ -339,10 +384,17 @@ class NioConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> tuple[dict[str, Any], str | None]:
         data = {**entry.data, CONF_TOKEN: _clean(user_input[CONF_TOKEN])}
         cookie = (user_input.get(CONF_COOKIE) or "").strip()
-        if cookie:
-            data[CONF_COOKIE] = cookie
-        elif CONF_COOKIE in data:
-            data = {k: v for k, v in data.items() if k != CONF_COOKIE}
+        data[CONF_COOKIE] = cookie
+        ua = (user_input.get(CONF_CHANGE_USER_AGENT) or "").strip()
+        mi = (user_input.get(CONF_CHANGE_MOBILEINFO) or "").strip()
+        if ua:
+            data[CONF_CHANGE_USER_AGENT] = ua
+        elif CONF_CHANGE_USER_AGENT in data:
+            data = {k: v for k, v in data.items() if k != CONF_CHANGE_USER_AGENT}
+        if mi:
+            data[CONF_CHANGE_MOBILEINFO] = mi
+        elif CONF_CHANGE_MOBILEINFO in data:
+            data = {k: v for k, v in data.items() if k != CONF_CHANGE_MOBILEINFO}
         capture = (user_input.get(CONF_CAPTURE) or "").strip()
         if capture:
             try:
@@ -491,6 +543,8 @@ class NioChangeOptionsFlow(OptionsFlow):
                     url=data[CONF_CHANGE_URL],
                     method=data.get(CONF_CHANGE_METHOD, DEFAULT_CHANGE_METHOD),
                     cookie=data.get(CONF_COOKIE),
+                    user_agent=data.get(CONF_CHANGE_USER_AGENT),
+                    mobileinfo=data.get(CONF_CHANGE_MOBILEINFO),
                 )
                 if error is None:
                     self.hass.config_entries.async_update_entry(entry, data=data)

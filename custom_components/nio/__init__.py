@@ -17,7 +17,9 @@ from .change_api import NioChangeApiClient
 from .change_coordinator import NioChangeConfigEntry, NioChangeDataUpdateCoordinator
 from .const import (
     CONF_CHANGE_METHOD,
+    CONF_CHANGE_MOBILEINFO,
     CONF_CHANGE_URL,
+    CONF_CHANGE_USER_AGENT,
     CONF_COOKIE,
     CONF_ENTRY_TYPE,
     CONF_MODEL,
@@ -96,6 +98,8 @@ async def _async_setup_change_entry(
         url=entry.data[CONF_CHANGE_URL],
         method=entry.data.get(CONF_CHANGE_METHOD, "POST"),
         cookie=entry.data.get(CONF_COOKIE),
+        user_agent=entry.data.get(CONF_CHANGE_USER_AGENT),
+        mobileinfo=entry.data.get(CONF_CHANGE_MOBILEINFO),
     )
     coordinator = NioChangeDataUpdateCoordinator(hass, entry, client)
     await coordinator.async_config_entry_first_refresh()

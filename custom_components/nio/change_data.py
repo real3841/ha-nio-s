@@ -54,21 +54,29 @@ def _is_cancelled_order(order: dict[str, Any]) -> bool:
     return code in ("255", "900") or "取消" in name
 
 
+def extract_orders(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """Pull the order list from getTabOrder payloads (camelCase or snake_case)."""
+    for result_key in ("resultData", "result_data"):
+        result_data = payload.get(result_key)
+        if not isinstance(result_data, dict):
+            continue
+        for list_key in ("data", "list", "orders"):
+            orders = result_data.get(list_key)
+            if isinstance(orders, list):
+                return [o for o in orders if isinstance(o, dict)]
+    return []
+
+
 def analyze_service_orders(payload: dict[str, Any]) -> ServiceSummary:
     """Summarise orders from a getTabOrder API ``data`` payload."""
-    result_data = payload.get("resultData") or {}
-    orders = result_data.get("data") if isinstance(result_data, dict) else None
-    if not isinstance(orders, list):
-        orders = []
-
     sorted_orders = sorted(
-        (o for o in orders if isinstance(o, dict)),
+        extract_orders(payload),
         key=lambda o: int(o.get("createTime") or 0),
         reverse=True,
     )
 
     swap_orders = [o for o in sorted_orders if o.get("orderType") == "pe_shaman_change"]
-    swap_completed = [o for o in swap_orders if str(o.get("orderStatus")) == "100"]
+    swap_completed = [o for o in swap_orders if _is_completed_order(o)]
     swap_cancelled = [o for o in swap_orders if _is_cancelled_order(o)]
     swap_spent = sum(float(o.get("priceCash") or 0) for o in swap_completed)
 

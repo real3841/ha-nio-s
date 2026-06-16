@@ -49,6 +49,7 @@
       "invalid_sign": "The NIO API rejected the signature, not the token — re-sniff a current vehicle status request.",
       "invalid_url": "Couldn't parse that as a vehicle status request. Paste the whole .../status?...&sign=... line.",
       "invalid_change_url": "Couldn't parse that as a service-order request. Paste the getTabOrder URL with query params.",
+      "empty_orders": "API connected but returned 0 orders. Check Cookie (tgw_l7_route=... from Postman), URL and token.",
       "cannot_connect": "Could not reach the NIO API."
     },
     "abort": {
