@@ -101,7 +101,7 @@ CHANGE_SCHEMA = vol.Schema(
         vol.Required(CONF_CAPTURE): _capture_box(),
         vol.Required(CONF_TOKEN): _secret(),
         vol.Optional(CONF_CHANGE_NAME, default="NIO 换电记录"): _text_box(),
-        vol.Required(CONF_COOKIE): _text_box(),
+        vol.Optional(CONF_COOKIE, default=""): _text_box(),
         vol.Optional(CONF_CHANGE_USER_AGENT, default=""): _text_box(),
         vol.Optional(CONF_CHANGE_MOBILEINFO, default=""): _text_box(),
         vol.Optional(
@@ -166,7 +166,10 @@ async def _async_validate_change(
     except NioChangeApiError:
         return "cannot_connect"
     if not extract_orders(payload):
-        return "empty_orders"
+        _LOGGER.warning(
+            "NIO change API returned 0 orders during setup — "
+            "check the full Postman URL (all Params) and Bearer token"
+        )
     return None
 
 
@@ -184,7 +187,7 @@ def _change_credentials_schema(entry: ConfigEntry) -> vol.Schema:
         {
             vol.Required(CONF_TOKEN, default=entry.data.get(CONF_TOKEN, "")): _secret(),
             vol.Optional(CONF_CAPTURE, default=""): _capture_box(),
-            vol.Required(CONF_COOKIE, default=entry.data.get(CONF_COOKIE, "")): _text_box(),
+            vol.Optional(CONF_COOKIE, default=entry.data.get(CONF_COOKIE, "")): _text_box(),
             vol.Optional(
                 CONF_CHANGE_USER_AGENT,
                 default=entry.data.get(CONF_CHANGE_USER_AGENT, ""),
@@ -206,8 +209,10 @@ def _change_entry_data(
         CONF_CHANGE_URL: url,
         CONF_CHANGE_METHOD: method,
         CONF_CHANGE_NAME: (user_input.get(CONF_CHANGE_NAME) or "NIO 换电记录").strip(),
-        CONF_COOKIE: (user_input.get(CONF_COOKIE) or "").strip(),
     }
+    cookie = (user_input.get(CONF_COOKIE) or "").strip()
+    if cookie:
+        data[CONF_COOKIE] = cookie
     ua = (user_input.get(CONF_CHANGE_USER_AGENT) or "").strip()
     mi = (user_input.get(CONF_CHANGE_MOBILEINFO) or "").strip()
     if ua:
@@ -384,7 +389,10 @@ class NioConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> tuple[dict[str, Any], str | None]:
         data = {**entry.data, CONF_TOKEN: _clean(user_input[CONF_TOKEN])}
         cookie = (user_input.get(CONF_COOKIE) or "").strip()
-        data[CONF_COOKIE] = cookie
+        if cookie:
+            data[CONF_COOKIE] = cookie
+        elif CONF_COOKIE in data:
+            data = {k: v for k, v in data.items() if k != CONF_COOKIE}
         ua = (user_input.get(CONF_CHANGE_USER_AGENT) or "").strip()
         mi = (user_input.get(CONF_CHANGE_MOBILEINFO) or "").strip()
         if ua:

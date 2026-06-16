@@ -100,8 +100,8 @@ class NioChangeApiClient:
             )
             if count == 0:
                 _LOGGER.warning(
-                    "NIO change API returned 0 orders — check Cookie / URL capture "
-                    "(Postman often needs tgw_l7_route=... Cookie plus User-Agent)"
+                    "NIO change API returned 0 orders — check the full Postman URL "
+                    "(all Params in query string) and Bearer token"
                 )
             return payload
 
