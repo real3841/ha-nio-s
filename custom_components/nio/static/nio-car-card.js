@@ -30,18 +30,57 @@ function fetchEntityRegistry(hass) {
   return _registryPromise;
 }
 
-/** unique_id is `<vehicle_id>_<key>`; match longest key first to avoid
- *  `remaining_range` swallowing `remaining_actual_range`. */
+/** unique_id is `<vehicle_id>_<key>`; matched by `uid.endsWith("_" + key)`.
+ *  Order matters: a key that is a suffix of another (e.g. `connected` of
+ *  `cdc_connected`, `remaining_range` of `remaining_actual_range`) must come
+ *  AFTER the longer one, or it would swallow it. */
 const ENTITY_KEYS = [
+  // energy & range
   "range_achievement_rate",
   "remaining_actual_range",
   "remaining_range",
+  "full_charge_range",
+  "charging_power",
+  "charge_state",
+  "battery_pack",
   "battery",
-  "driving",
-  "sleeping",
+  "mileage",
+  // doors / windows / openings
   "door",
   "window",
   "lock",
+  "hood",
+  "tailgate",
+  "charge_port",
+  // climate
+  "inside_temperature",
+  "outside_temperature",
+  "air_conditioner",
+  // seats
+  "steer_wheel_heat",
+  "seat_heat_front",
+  "seat_heat_rear",
+  "seat_ventilation",
+  // special modes
+  "pet_mode",
+  "power_hold_mode",
+  "camping_mode",
+  "defender_mode",
+  "remote_video",
+  // status / connection
+  "vehicle_state",
+  "driving",
+  "sleeping",
+  "checked_in_days",
+  "cdc_connected",
+  "adc_offline",
+  "connected",
+  // maintenance / alerts / firmware
+  "maintenance_due",
+  "maintenance",
+  "alerts",
+  "fota_version",
+  // misc
   "refresh",
   "location",
 ];
@@ -258,19 +297,24 @@ class NioCarCard extends HTMLElement {
         .nio-cc-dialog { background: var(--card-background-color, #fff);
                          color: var(--primary-text-color, #1c1c1c);
                          border-radius: var(--ha-card-border-radius, 12px);
-                         width: min(420px, 92vw); max-height: 86vh; overflow-y: auto;
+                         width: min(460px, 94vw); max-height: 86vh; overflow-y: auto;
                          box-shadow: 0 8px 32px rgba(0,0,0,.35);
                          font-family: var(--mdc-typography-font-family, Roboto, system-ui, sans-serif); }
         .nio-cc-head { display: flex; align-items: center; justify-content: space-between;
-                       padding: 14px 18px 4px; font-size: 18px; font-weight: 500; }
+                       padding: 14px 18px 4px; font-size: 18px; font-weight: 500;
+                       position: sticky; top: 0; z-index: 1;
+                       background: var(--card-background-color, #fff); }
         .nio-cc-head ha-icon { cursor: pointer; color: var(--secondary-text-color); }
         .nio-cc-body { padding: 6px 18px; }
-        .nio-cc-body h3 { font-size: 17px; font-weight: 600; margin: 18px 0 6px;
-                          color: var(--primary-text-color); }
-        .nio-cc-body h3:first-child { margin-top: 6px; }
-        .nio-cc-row { display: flex; justify-content: space-between; padding: 12px 0;
-                      cursor: pointer; font-size: 14px; }
-        .nio-cc-row .val { color: var(--secondary-text-color); }
+        .nio-cc-body h3 { font-size: 15px; font-weight: 600; margin: 16px 0 2px;
+                          color: var(--primary-color, #03a9f4); }
+        .nio-cc-body h3:first-child { margin-top: 4px; }
+        .nio-cc-row { display: flex; justify-content: space-between; gap: 12px;
+                      padding: 9px 0; cursor: pointer; font-size: 14px;
+                      border-bottom: 1px solid var(--divider-color, rgba(0,0,0,.08)); }
+        .nio-cc-row:last-child { border-bottom: none; }
+        .nio-cc-row .val { color: var(--secondary-text-color); text-align: right;
+                           white-space: nowrap; }
         .nio-cc-foot { display: flex; justify-content: space-between; padding: 12px 18px 16px; }
         .nio-cc-foot button { background: none; border: none; cursor: pointer;
                               color: var(--primary-color, #03a9f4); font-size: 14px;
@@ -318,26 +362,93 @@ class NioCarCard extends HTMLElement {
   _renderPopupBody() {
     if (!this._hass || !this._entities || !this._overlay) return;
     const E = this._entities;
+    // Dashboard-style sections — mirrors the standalone NIO web board.
+    // Rows with a missing entity are dropped; whole sections with no rows
+    // are hidden, so this degrades gracefully on partial vehicle data.
     const sections = [
-      { title: "车辆状态", rows: [["驾驶状态", E.driving], ["睡眠状态", E.sleeping]] },
       {
-        title: "能源与续航",
+        title: "电池与续航",
         rows: [
           ["电池电量", E.battery],
+          ["充电状态", E.charge_state],
+          ["充电功率", E.charging_power],
           ["续航(CLTC)", E.remaining_range],
           ["续航(实际)", E.remaining_actual_range],
+          ["满电续航", E.full_charge_range],
           ["续航达成率", E.range_achievement_rate],
+          ["电池包", E.battery_pack],
+          ["总里程", E.mileage],
         ],
       },
-      { title: "安防细节", rows: [["车门状态", E.door], ["车窗状态", E.window]] },
+      {
+        title: "门窗状态",
+        rows: [
+          ["车锁", E.lock],
+          ["车门", E.door],
+          ["车窗", E.window],
+          ["前备箱", E.hood],
+          ["尾门", E.tailgate],
+          ["充电口", E.charge_port],
+        ],
+      },
+      {
+        title: "特殊模式",
+        rows: [
+          ["宠物模式", E.pet_mode],
+          ["离车不下电", E.power_hold_mode],
+          ["露营模式", E.camping_mode],
+          ["守卫模式", E.defender_mode],
+          ["远程查看", E.remote_video],
+        ],
+      },
+      {
+        title: "座椅加热",
+        rows: [
+          ["方向盘加热", E.steer_wheel_heat],
+          ["前排座椅", E.seat_heat_front],
+          ["后排座椅", E.seat_heat_rear],
+          ["座椅通风", E.seat_ventilation],
+        ],
+      },
+      {
+        title: "温度",
+        rows: [
+          ["车内温度", E.inside_temperature],
+          ["车外温度", E.outside_temperature],
+          ["空调状态", E.air_conditioner],
+        ],
+      },
+      {
+        title: "车辆状态",
+        rows: [
+          ["车辆状态", E.vehicle_state],
+          ["驾驶状态", E.driving],
+          ["睡眠状态", E.sleeping],
+          ["连续用车", E.checked_in_days],
+          ["CDC 连接", E.cdc_connected],
+          ["ADC 离线", E.adc_offline],
+          ["云端连接", E.connected],
+        ],
+      },
+      {
+        title: "维保与告警",
+        rows: [
+          ["告警", E.alerts],
+          ["维保提醒", E.maintenance],
+          ["待维保", E.maintenance_due],
+          ["软件版本", E.fota_version],
+        ],
+      },
+      { title: "位置", rows: [["车辆位置", E.location]] },
     ];
     const body = this._overlay.querySelector(".nio-cc-body");
     body.innerHTML = sections
-      .map(
-        (s) => `
+      .map((s) => {
+        const rows = s.rows.filter(([, ent]) => ent && this._hass.states[ent]);
+        if (!rows.length) return "";
+        return `
         <h3>${s.title}</h3>
-        ${s.rows
-          .filter(([, ent]) => ent)
+        ${rows
           .map(
             ([label, ent]) => `
             <div class="nio-cc-row" data-entity="${ent}">
@@ -345,8 +456,8 @@ class NioCarCard extends HTMLElement {
               <span class="val">${formatState(this._hass, ent)}</span>
             </div>`
           )
-          .join("")}`
-      )
+          .join("")}`;
+      })
       .join("");
     body.querySelectorAll(".nio-cc-row").forEach((row) => {
       row.addEventListener("click", () => {

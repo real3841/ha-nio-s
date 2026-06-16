@@ -6,27 +6,62 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![release](https://img.shields.io/github/v/release/real3841/ha-nio-s)](https://github.com/real3841/ha-nio-s/releases)
 
-Home Assistant custom integration for **NIO** electric vehicles (EC6/ES6/ET5…),
-built on the same private API the NIO iOS app uses (`icar.nio.com`). There is
-no official NIO integration — this one gives you battery, range, doors/windows,
-driving state and a live map position (GCJ-02 → WGS-84 corrected, no offset in
-mainland China).
+Home Assistant custom integration for **NIO** electric vehicles
+(EC6 / ES6 / ES8 / ET5 / ET7 …), built on the same private API the NIO iOS app
+uses. There is no official NIO integration — this one gives you battery, range,
+doors/windows, driving state, seat heating, off-car modes and a live map
+position (GCJ-02 → WGS-84 corrected, no offset in mainland China), plus
+**optional** battery-swap / service-order history.
 
 ![card](images/nio_card.png)
 
+## Highlights
+
+- **Vehicle status**: battery, range, vehicle state, charging, temperature, mileage, tyres, firmware
+- **Door/window safety**: per-opening state for doors, windows, lock, frunk, tailgate, charge port
+- **Alerts roundup**: doors/windows open, unlocked, low battery, offline, maintenance — rolled into one `Alerts` entity (ready for notifications)
+- **Seat heating / ventilation & off-car modes**: steering-wheel heat, seat heat, pet / camping / defender modes
+- **Live location**: registry-backed `device_tracker`, coordinates corrected, survives restarts
+- **Battery swap / service orders (optional)**: swap counts, total/average spend, flexible upgrades, last order time
+- **Bundled Lovelace card**: NIO Car Card — auto-registered, visual editor, zero frontend dependencies
+
+## Two config types (added separately)
+
+Vehicle status and swap history use **different APIs**, so they are added as two
+independent entries that don't affect each other:
+
+1. **Vehicle status** (required, works on its own)
+2. **Battery swap / service orders** (optional)
+
+Each entry has its own token, polling interval and "refresh now" button.
+
 ## Entities
+
+### Vehicle (first add)
 
 | Platform | Entities |
 | --- | --- |
-| `sensor` | Battery %, Range (CLTC), Range (actual), Range achievement rate, Vehicle state, Charging power, Inside/Outside temperature, Mileage, Tyre pressure ×4 (diagnostic), Firmware version (diagnostic) |
-| `binary_sensor` | Driving, Sleeping, Doors, Windows, Lock, Charging, Cloud connection (diagnostic) |
+| `sensor` | Battery %, Range (CLTC), Range (actual), Range achievement rate, Full-charge range, Battery pack, Vehicle state, Charge state, Charging power, Inside/Outside temperature, Mileage, Steering-wheel heat, Front/Rear seat heat, Seat ventilation, Maintenance, Consecutive driving days, Alerts, Tyre pressure ×4 (diagnostic), Firmware version (diagnostic) |
+| `binary_sensor` | Driving, Sleeping, Doors, Windows, Lock, Charging, Frunk, Tailgate, Charge port, Air conditioner, Alert active, Battery critical, Battery low, Maintenance due, Server alarm, Pet / Power-hold / Camping / Defender / Remote-video modes, Cloud / ADC / CDC connection (diagnostic) |
 | `device_tracker` | Vehicle location (WGS-84, registry-backed — survives restarts) |
 | `button` | Refresh data (immediate poll) |
 
+`Alerts` (`sensor.*_alerts`) holds the count of alerts worth attention; its
+`items` attribute carries the full list (title, detail, severity) — ready to
+drive automations or a card.
+
 Polling is adaptive to be gentle on the private API (it rate-limits, and may
 invalidate your token, if hammered): every 5 min while driving, 15 min in the
-daytime, 30 min overnight. All intervals are configurable in the integration
-options.
+daytime, 30 min overnight. All intervals are configurable in the options.
+
+### Battery swap / service orders (second add, optional)
+
+| Platform | Entities |
+| --- | --- |
+| `sensor` | Service orders total, Battery swaps completed, Battery swaps cancelled, Battery swap spend, Battery swap average spend, Flexible upgrades completed, Flexible upgrade spend, Last service order |
+| `button` | Refresh service orders |
+
+Defaults to polling every 60 minutes, configurable in the options.
 
 ## Lovelace card
 
@@ -45,7 +80,7 @@ and body colour from swatches; no YAML required:
 | Option | Effect |
 | --- | --- |
 | Vehicle | The NIO device — entities are resolved from its registry, so renamed entity ids keep working |
-| Model / Colour | Selects the bundled render; 9 models, every factory colour |
+| Model / Colour | Selects the bundled render; multiple models, every factory colour |
 | Name | Card title (defaults to `NIO <MODEL>`) |
 | Background colour | Studio backdrop tint behind the (transparent) car |
 | Background gradient | Top-left-light → bottom-right-dark studio sheen (on by default) |
@@ -75,7 +110,7 @@ fallback snippet is in [`lovelace/`](lovelace/) for anyone who prefers raw YAML.
 Copy `custom_components/nio/` into your HA `config/custom_components/` and
 restart.
 
-## Setup
+## Setup: vehicle status
 
 The integration authenticates by replaying the app's own request, so you need
 to sniff it once:
@@ -89,20 +124,18 @@ to sniff it once:
    - the **whole request URL** (from `https://…/status?` through the trailing
      `…&sign=…` — copy all of it)
    - the token — the `Authorization: Bearer …` request **header**
-5. In HA: *Settings → Devices & services → Add integration → NIO*, paste the
-   whole URL into the "Captured status request URL" box and the token into the
-   token box.
+5. In HA: *Settings → Devices & services → Add integration → NIO → Vehicle
+   status*, paste the whole URL into the "Status request URL" box, the token
+   into the token box, and set your model.
 
 > [!IMPORTANT]
 > **Don't edit that URL.** The server's `sign` covers the entire query string
 > (field list + order, `app_ver`, `device_id`, `timestamp`…), and those drift
 > across app versions (6.6.0 added `field=key`; `app_ver` differs per user). The
 > integration replays your captured URL **byte-for-byte**, so don't reconstruct
-> it field-by-field — that was exactly why old versions (≤0.2.x) reported
-> "token rejected" after every app update (it was a *signature* mismatch
-> mislabelled as an auth failure). The captured `sign` isn't freshness-checked,
-> so one capture lasts a long time. URL and token are kept in HA's encrypted
-> config storage (no plaintext YAML).
+> it field-by-field. The captured `sign` isn't freshness-checked, so one capture
+> lasts a long time. URL and token are kept in HA's encrypted config storage
+> (no plaintext YAML).
 
 > [!WARNING]
 > The Bearer token is your NIO account session credential — treat it like a
@@ -114,10 +147,30 @@ sniff a fresh token and enter it. No restart needed. If the prompt says the
 **signature** was rejected (usually after an app update), also paste a freshly
 captured URL to refresh it.
 
-> [!NOTE]
-> Existing users upgrading from ≤0.2.x **don't need to re-sniff**: the upgrade
-> auto-migrates the old per-field data into the equivalent verbatim query
-> (v1→v2 migration), and the sign that already worked keeps working.
+## Setup: battery swap / service orders (optional)
+
+Swap history uses a different endpoint
+(`gateway-front-external.nio.com/.../serviceOrder/getTabOrder`). Copying the
+**full request from Postman** is usually easiest:
+
+1. In Postman (or a proxy), prepare the getTabOrder request, make sure **all the
+   Params are present** (`limit`, `orderTypes`, `region`, …), and confirm
+   **Send** returns the order list.
+2. Copy:
+   - the **full URL** (including every query param after `?`)
+   - the **Bearer token** (Authorization tab)
+3. In HA: *Add integration → NIO → Battery swap / service orders*, fill in:
+   - **getTabOrder request URL**
+   - **Bearer token**
+   - **HTTP method** (defaults to `POST`, empty body)
+   - **Cookie / User-Agent / mobileinfo**: optional — most Postman captures
+     don't need them, leave blank
+
+> [!TIP]
+> If all swap sensors read 0, the URL was probably **pasted without its query
+> params** (everything after `?`) or the **token doesn't match**. Open the
+> `Service orders` sensor and check the `raw_order_count` attribute (> 0) and
+> `api_result_code` (should be `0000`).
 
 ## Notes
 
@@ -128,11 +181,11 @@ captured URL to refresh it.
 - **Door semantics** are field-tested on a real EC6 (every opening cycled and
   matched 1:1 against raw API captures): `*_ajar_status` `1` = closed, `0` =
   open; `vehicle_lock_status` `1` = locked, `0` = unlocked. Window `win_*_posn`
-  follows the legacy YAML behaviour (`0` = closed, `>0` = open). If your car
-  reports differently, please open an issue with the `door_status` payload.
-- A "battery low → swap reminder" stays a user automation on purpose — trigger
-  on `sensor.<vehicle>_remaining_actual_range` at the time of day that suits
-  your nearest swap station.
+  is `0` = closed, `>0` = open. If your car reports differently, please open an
+  issue with the `door_status` payload.
+- **Alerts**: `sensor.*_alerts` already bundles the door/lock/low-battery/
+  offline/maintenance/defender rules — no templates needed. Listen to it to
+  drive notifications.
 
 ## Acknowledgements
 
