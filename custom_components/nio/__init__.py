@@ -49,30 +49,35 @@ CHANGE_PLATFORMS: list[Platform] = [
 
 async def async_setup_entry(hass: HomeAssistant, entry: NioConfigEntry) -> bool:
     """Set up NIO from a config entry (vehicle or service-order)."""
+    await _async_register_frontend(hass)
     entry_type = entry.data.get(CONF_ENTRY_TYPE, ENTRY_TYPE_VEHICLE)
     if entry_type == ENTRY_TYPE_CHANGE:
         return await _async_setup_change_entry(hass, entry)  # type: ignore[arg-type]
     return await _async_setup_vehicle_entry(hass, entry)
 
 
+async def _async_register_frontend(hass: HomeAssistant) -> None:
+    """Register bundled Lovelace card JS + static assets (once per HA instance)."""
+    if hass.data.setdefault(DOMAIN, {}).get("static_registered"):
+        return
+    await hass.http.async_register_static_paths(
+        [
+            StaticPathConfig(
+                STATIC_URL_BASE,
+                str(Path(__file__).parent / "static"),
+                cache_headers=True,
+            )
+        ]
+    )
+    integration = await async_get_integration(hass, DOMAIN)
+    add_extra_js_url(
+        hass, f"{STATIC_URL_BASE}/nio-car-card.js?v={integration.version}"
+    )
+    hass.data[DOMAIN]["static_registered"] = True
+
+
 async def _async_setup_vehicle_entry(hass: HomeAssistant, entry: NioConfigEntry) -> bool:
     """Set up a vehicle status config entry."""
-    if not hass.data.setdefault(DOMAIN, {}).get("static_registered"):
-        await hass.http.async_register_static_paths(
-            [
-                StaticPathConfig(
-                    STATIC_URL_BASE,
-                    str(Path(__file__).parent / "static"),
-                    cache_headers=True,
-                )
-            ]
-        )
-        integration = await async_get_integration(hass, DOMAIN)
-        add_extra_js_url(
-            hass, f"{STATIC_URL_BASE}/nio-car-card.js?v={integration.version}"
-        )
-        hass.data[DOMAIN]["static_registered"] = True
-
     client = NioApiClient(
         async_get_clientsession(hass),
         token=entry.data[CONF_TOKEN],
