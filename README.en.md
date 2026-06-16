@@ -1,10 +1,10 @@
-# ha-nio
+# ha-nio-s
 
 [简体中文](README.md) | **English**
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![release](https://img.shields.io/github/v/release/genelee26/ha-nio)](https://github.com/genelee26/ha-nio/releases)
+[![release](https://img.shields.io/github/v/release/real3841/ha-nio-s)](https://github.com/real3841/ha-nio-s/releases)
 
 Home Assistant custom integration for **NIO** electric vehicles (EC6/ES6/ET5…),
 built on the same private API the NIO iOS app uses (`icar.nio.com`). There is
@@ -67,7 +67,7 @@ fallback snippet is in [`lovelace/`](lovelace/) for anyone who prefers raw YAML.
 ### HACS (custom repository)
 
 1. HACS → Integrations → ⋮ → *Custom repositories*
-2. Add `https://github.com/genelee26/ha-nio` as type *Integration*
+2. Add `https://github.com/real3841/ha-nio-s` as type *Integration*
 3. Install **NIO**, restart Home Assistant
 
 ### Manual

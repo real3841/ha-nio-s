@@ -1,10 +1,10 @@
-# ha-nio
+# ha-nio-s
 
 **简体中文** | [English](README.en.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![release](https://img.shields.io/github/v/release/genelee26/ha-nio)](https://github.com/genelee26/ha-nio/releases)
+[![release](https://img.shields.io/github/v/release/real3841/ha-nio-s)](https://github.com/real3841/ha-nio-s/releases)
 
 把 **蔚来（NIO）** 电动车（EC6/ES6/ET5…）接入 Home Assistant 的自定义集成，基于
 蔚来 iOS App 同款的私有 API（`icar.nio.com`）。蔚来没有官方 HA 集成——这个集成给你
@@ -60,7 +60,7 @@
 ### HACS（自定义存储库）
 
 1. HACS → 集成 → ⋮ → *自定义存储库*
-2. 添加 `https://github.com/genelee26/ha-nio`，类型选 *Integration*
+2. 添加 `https://github.com/real3841/ha-nio-s`，类型选 *Integration*
 3. 安装 **NIO**，重启 Home Assistant
 
 ### 手动
