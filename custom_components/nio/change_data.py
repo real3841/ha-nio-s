@@ -5,6 +5,7 @@ Ported from foxwang/nio ``src/lib/change.ts`` — kept import-light for tests.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Any
 
@@ -31,10 +32,26 @@ def _parse_payment_info(order: dict[str, Any]) -> list[dict[str, Any]]:
     return [p for p in raw if isinstance(p, dict) and "amount" in p]
 
 
+def _parse_pay_desc_amount(pay_desc: str) -> float:
+    """Extract a numeric amount from strings like ``¥ 26.21``."""
+    if not pay_desc:
+        return 0.0
+    match = re.search(r"[\d,.]+", pay_desc.replace("¥", "").replace(" ", ""))
+    if not match:
+        return 0.0
+    try:
+        return float(match.group(0).replace(",", ""))
+    except ValueError:
+        return 0.0
+
+
 def order_spent_amount(order: dict[str, Any]) -> float:
     cash = float(order.get("priceCash") or 0)
     if cash > 0:
         return cash
+    paid = _parse_pay_desc_amount(str(order.get("payDesc") or ""))
+    if paid > 0:
+        return paid
     return sum(float(p.get("amount") or 0) for p in _parse_payment_info(order))
 
 
@@ -78,7 +95,7 @@ def analyze_service_orders(payload: dict[str, Any]) -> ServiceSummary:
     swap_orders = [o for o in sorted_orders if o.get("orderType") == "pe_shaman_change"]
     swap_completed = [o for o in swap_orders if _is_completed_order(o)]
     swap_cancelled = [o for o in swap_orders if _is_cancelled_order(o)]
-    swap_spent = sum(float(o.get("priceCash") or 0) for o in swap_completed)
+    swap_spent = sum(order_spent_amount(o) for o in swap_completed)
 
     upgrade_orders = [
         o for o in sorted_orders if o.get("orderType") == "battery_flexible_upgrade"

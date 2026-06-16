@@ -125,7 +125,9 @@ class NioChangeSensor(NioChangeEntity, SensorEntity):
         super().__init__(coordinator, description.key)
         self.entity_description = description
         if description.key in ("swap_spent", "swap_avg_spent", "upgrade_spent"):
+            self._attr_device_class = SensorDeviceClass.MONETARY
             self._attr_native_unit_of_measurement = "CNY"
+            self._attr_suggested_display_precision = 2
 
     @property
     def native_value(self) -> Any:

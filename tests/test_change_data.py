@@ -46,11 +46,17 @@ def test_analyze_service_orders():
     summary = change_data.analyze_service_orders(CHANGE_FIXTURE)
     assert summary.total > 0
     assert summary.swap_completed >= 1
+    assert summary.swap_spent > 0
     assert summary.last_order_time is not None
     print(
         f"  orders={summary.total} swaps={summary.swap_completed} "
         f"spent={summary.swap_spent}"
     )
+
+
+def test_order_spent_amount_from_pay_desc():
+    assert change_data.order_spent_amount({"payDesc": "¥ 26.21"}) == 26.21
+    assert change_data.order_spent_amount({"priceCash": "10"}) == 10.0
 
 
 if __name__ == "__main__":
@@ -59,6 +65,7 @@ if __name__ == "__main__":
         test_parse_change_capture_full_url,
         test_change_unique_id_stable,
         test_analyze_service_orders,
+        test_order_spent_amount_from_pay_desc,
     ):
         print(f"{fn.__name__}:")
         fn()

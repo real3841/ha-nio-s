@@ -101,6 +101,33 @@ async function resolveDeviceEntities(hass, deviceId) {
   return map;
 }
 
+const CHANGE_KEYS = [
+  "service_orders_total",
+  "swap_completed",
+  "swap_spent",
+  "swap_avg_spent",
+  "upgrade_completed",
+  "upgrade_spent",
+  "last_service_order",
+];
+
+async function resolveChangeEntities(hass) {
+  const registry = await fetchEntityRegistry(hass);
+  const map = {};
+  for (const entry of registry) {
+    if (entry.disabled_by) continue;
+    const uid = entry.unique_id || "";
+    if (!uid.startsWith("change_")) continue;
+    for (const key of CHANGE_KEYS) {
+      if (!map[key] && uid.endsWith(`_${key}`)) {
+        map[key] = entry.entity_id;
+        break;
+      }
+    }
+  }
+  return map;
+}
+
 function fireEvent(node, type, detail) {
   node.dispatchEvent(
     new CustomEvent(type, { detail, bubbles: true, composed: true })
@@ -115,6 +142,18 @@ function formatState(hass, entityId) {
   }
   const unit = st.attributes.unit_of_measurement;
   return unit ? `${st.state} ${unit}` : st.state;
+}
+
+function formatMoney(hass, entityId) {
+  const st = hass.states[entityId];
+  if (!st || st.state === "unavailable" || st.state === "unknown") return "—";
+  const val = parseFloat(st.state);
+  if (isNaN(val)) return formatState(hass, entityId);
+  return `¥${val.toFixed(2)}`;
+}
+
+function formatRowValue(hass, entityId, money = false) {
+  return money ? formatMoney(hass, entityId) : formatState(hass, entityId);
 }
 
 /* ---------------------------------------------------------------- card */
@@ -297,24 +336,44 @@ class NioCarCard extends HTMLElement {
         .nio-cc-dialog { background: var(--card-background-color, #fff);
                          color: var(--primary-text-color, #1c1c1c);
                          border-radius: var(--ha-card-border-radius, 12px);
-                         width: min(460px, 94vw); max-height: 86vh; overflow-y: auto;
+                         width: min(560px, 96vw); max-height: 82vh; overflow-y: auto;
                          box-shadow: 0 8px 32px rgba(0,0,0,.35);
                          font-family: var(--mdc-typography-font-family, Roboto, system-ui, sans-serif); }
         .nio-cc-head { display: flex; align-items: center; justify-content: space-between;
-                       padding: 14px 18px 4px; font-size: 18px; font-weight: 500;
+                       padding: 12px 16px 6px; font-size: 17px; font-weight: 500;
                        position: sticky; top: 0; z-index: 1;
                        background: var(--card-background-color, #fff); }
         .nio-cc-head ha-icon { cursor: pointer; color: var(--secondary-text-color); }
-        .nio-cc-body { padding: 6px 18px; }
-        .nio-cc-body h3 { font-size: 15px; font-weight: 600; margin: 16px 0 2px;
-                          color: var(--primary-color, #03a9f4); }
-        .nio-cc-body h3:first-child { margin-top: 4px; }
-        .nio-cc-row { display: flex; justify-content: space-between; gap: 12px;
-                      padding: 9px 0; cursor: pointer; font-size: 14px;
-                      border-bottom: 1px solid var(--divider-color, rgba(0,0,0,.08)); }
-        .nio-cc-row:last-child { border-bottom: none; }
+        .nio-cc-body { padding: 4px 14px 8px; }
+        .nio-cc-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+                          margin-bottom: 10px; }
+        .nio-cc-tile { background: var(--secondary-background-color, rgba(0,0,0,.04));
+                        border-radius: 8px; padding: 8px 6px; text-align: center;
+                        cursor: pointer; min-width: 0; }
+        .nio-cc-tile .lbl { font-size: 10px; color: var(--secondary-text-color);
+                            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .nio-cc-tile .val { font-size: 14px; font-weight: 600; margin-top: 2px;
+                             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .nio-cc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .nio-cc-section { background: var(--secondary-background-color, rgba(0,0,0,.04));
+                           border-radius: 8px; padding: 8px 10px; min-width: 0; }
+        .nio-cc-section h3 { font-size: 12px; font-weight: 600; margin: 0 0 4px;
+                             color: var(--primary-color, #03a9f4); }
+        .nio-cc-row { display: flex; justify-content: space-between; gap: 6px;
+                      padding: 4px 0; cursor: pointer; font-size: 12px;
+                      border-bottom: 1px solid var(--divider-color, rgba(0,0,0,.06)); }
+        .nio-cc-section .nio-cc-row:last-child { border-bottom: none; }
+        .nio-cc-row .lbl { color: var(--primary-text-color); }
         .nio-cc-row .val { color: var(--secondary-text-color); text-align: right;
-                           white-space: nowrap; }
+                           white-space: nowrap; flex-shrink: 0; }
+        .nio-cc-more { margin-top: 8px; }
+        .nio-cc-more summary { cursor: pointer; font-size: 13px; font-weight: 500;
+                               color: var(--primary-color, #03a9f4); padding: 6px 2px; }
+        .nio-cc-more .nio-cc-grid { margin-top: 6px; }
+        @media (max-width: 520px) {
+          .nio-cc-summary { grid-template-columns: repeat(2, 1fr); }
+          .nio-cc-grid { grid-template-columns: 1fr; }
+        }
         .nio-cc-foot { display: flex; justify-content: space-between; padding: 12px 18px 16px; }
         .nio-cc-foot button { background: none; border: none; cursor: pointer;
                               color: var(--primary-color, #03a9f4); font-size: 14px;
@@ -345,6 +404,11 @@ class NioCarCard extends HTMLElement {
     });
     document.body.appendChild(ov);
     this._overlay = ov;
+    this._changeEntities = null;
+    resolveChangeEntities(this._hass).then((map) => {
+      this._changeEntities = map;
+      if (this._overlay) this._renderPopupBody();
+    });
     this._renderPopupBody();
   }
 
@@ -362,107 +426,125 @@ class NioCarCard extends HTMLElement {
   _renderPopupBody() {
     if (!this._hass || !this._entities || !this._overlay) return;
     const E = this._entities;
-    // Dashboard-style sections — mirrors the standalone NIO web board.
-    // Rows with a missing entity are dropped; whole sections with no rows
-    // are hidden, so this degrades gracefully on partial vehicle data.
-    const sections = [
-      {
-        title: "电池与续航",
-        rows: [
-          ["电池电量", E.battery],
-          ["充电状态", E.charge_state],
-          ["充电功率", E.charging_power],
-          ["续航(CLTC)", E.remaining_range],
-          ["续航(实际)", E.remaining_actual_range],
-          ["满电续航", E.full_charge_range],
-          ["续航达成率", E.range_achievement_rate],
-          ["电池包", E.battery_pack],
-          ["总里程", E.mileage],
-        ],
-      },
-      {
-        title: "门窗状态",
-        rows: [
-          ["车锁", E.lock],
-          ["车门", E.door],
-          ["车窗", E.window],
-          ["前备箱", E.hood],
-          ["尾门", E.tailgate],
-          ["充电口", E.charge_port],
-        ],
-      },
-      {
-        title: "特殊模式",
-        rows: [
-          ["宠物模式", E.pet_mode],
-          ["离车不下电", E.power_hold_mode],
-          ["露营模式", E.camping_mode],
-          ["守卫模式", E.defender_mode],
-          ["远程查看", E.remote_video],
-        ],
-      },
-      {
-        title: "座椅加热",
-        rows: [
-          ["方向盘加热", E.steer_wheel_heat],
-          ["前排座椅", E.seat_heat_front],
-          ["后排座椅", E.seat_heat_rear],
-          ["座椅通风", E.seat_ventilation],
-        ],
-      },
-      {
-        title: "温度",
-        rows: [
-          ["车内温度", E.inside_temperature],
-          ["车外温度", E.outside_temperature],
-          ["空调状态", E.air_conditioner],
-        ],
-      },
-      {
-        title: "车辆状态",
-        rows: [
-          ["车辆状态", E.vehicle_state],
-          ["驾驶状态", E.driving],
-          ["睡眠状态", E.sleeping],
-          ["连续用车", E.checked_in_days],
-          ["CDC 连接", E.cdc_connected],
-          ["ADC 离线", E.adc_offline],
-          ["云端连接", E.connected],
-        ],
-      },
-      {
-        title: "维保与告警",
-        rows: [
-          ["告警", E.alerts],
-          ["维保提醒", E.maintenance],
-          ["待维保", E.maintenance_due],
-          ["软件版本", E.fota_version],
-        ],
-      },
-      { title: "位置", rows: [["车辆位置", E.location]] },
-    ];
-    const body = this._overlay.querySelector(".nio-cc-body");
-    body.innerHTML = sections
-      .map((s) => {
-        const rows = s.rows.filter(([, ent]) => ent && this._hass.states[ent]);
-        if (!rows.length) return "";
-        return `
-        <h3>${s.title}</h3>
-        ${rows
-          .map(
-            ([label, ent]) => `
-            <div class="nio-cc-row" data-entity="${ent}">
-              <span>${label}</span>
-              <span class="val">${formatState(this._hass, ent)}</span>
-            </div>`
-          )
-          .join("")}`;
-      })
+    const C = this._changeEntities || {};
+    const hass = this._hass;
+
+    const row = (label, ent, money = false) => {
+      if (!ent || !hass.states[ent]) return "";
+      return `<div class="nio-cc-row" data-entity="${ent}">
+        <span class="lbl">${label}</span>
+        <span class="val">${formatRowValue(hass, ent, money)}</span>
+      </div>`;
+    };
+
+    const section = (title, rowsHtml) => {
+      if (!rowsHtml) return "";
+      return `<div class="nio-cc-section"><h3>${title}</h3>${rowsHtml}</div>`;
+    };
+
+    const buildSection = (title, rows) => {
+      const html = rows.map(([l, e, m]) => row(l, e, m)).join("");
+      return section(title, html);
+    };
+
+    // Top summary tiles — key metrics at a glance.
+    const tiles = [
+      ["电量", E.battery],
+      ["CLTC", E.remaining_range],
+      ["实际", E.remaining_actual_range],
+      ["告警", E.alerts],
+    ]
+      .filter(([, ent]) => ent && hass.states[ent])
+      .map(
+        ([label, ent]) =>
+          `<div class="nio-cc-tile" data-entity="${ent}">
+             <div class="lbl">${label}</div>
+             <div class="val">${formatState(hass, ent)}</div>
+           </div>`
+      )
       .join("");
-    body.querySelectorAll(".nio-cc-row").forEach((row) => {
-      row.addEventListener("click", () => {
+
+    const mainGrid = [
+      buildSection("电池", [
+        ["充电", E.charge_state],
+        ["功率", E.charging_power],
+        ["满电", E.full_charge_range],
+        ["达成率", E.range_achievement_rate],
+      ]),
+      buildSection("门窗", [
+        ["车锁", E.lock],
+        ["车门", E.door],
+        ["车窗", E.window],
+        ["前备箱", E.hood],
+        ["尾门", E.tailgate],
+      ]),
+      buildSection("温度", [
+        ["车内", E.inside_temperature],
+        ["车外", E.outside_temperature],
+        ["空调", E.air_conditioner],
+      ]),
+      buildSection("座椅", [
+        ["方向盘", E.steer_wheel_heat],
+        ["前排", E.seat_heat_front],
+        ["后排", E.seat_heat_rear],
+        ["通风", E.seat_ventilation],
+      ]),
+      buildSection("模式", [
+        ["宠物", E.pet_mode],
+        ["离车不下电", E.power_hold_mode],
+        ["露营", E.camping_mode],
+        ["守卫", E.defender_mode],
+      ]),
+      buildSection("状态", [
+        ["车辆", E.vehicle_state],
+        ["驾驶", E.driving],
+        ["睡眠", E.sleeping],
+        ["连续用车", E.checked_in_days],
+      ]),
+    ]
+      .filter(Boolean)
+      .join("");
+
+    const changeSection = buildSection("换电记录", [
+      ["完成次数", C.swap_completed],
+      ["累计花费", C.swap_spent, true],
+      ["平均花费", C.swap_avg_spent, true],
+      ["升级花费", C.upgrade_spent, true],
+    ]);
+
+    const moreGrid = [
+      buildSection("连接", [
+        ["CDC", E.cdc_connected],
+        ["ADC 离线", E.adc_offline],
+        ["云端", E.connected],
+      ]),
+      buildSection("维保", [
+        ["维保", E.maintenance],
+        ["待维保", E.maintenance_due],
+        ["版本", E.fota_version],
+      ]),
+      buildSection("其他", [
+        ["里程", E.mileage],
+        ["电池包", E.battery_pack],
+        ["充电口", E.charge_port],
+        ["远程查看", E.remote_video],
+        ["位置", E.location],
+      ]),
+    ]
+      .filter(Boolean)
+      .join("");
+
+    const body = this._overlay.querySelector(".nio-cc-body");
+    body.innerHTML = `
+      ${tiles ? `<div class="nio-cc-summary">${tiles}</div>` : ""}
+      <div class="nio-cc-grid">${mainGrid}${changeSection}</div>
+      ${moreGrid ? `<details class="nio-cc-more"><summary>更多</summary><div class="nio-cc-grid">${moreGrid}</div></details>` : ""}
+    `;
+
+    body.querySelectorAll("[data-entity]").forEach((el) => {
+      el.addEventListener("click", () => {
         this._closePopup();
-        fireEvent(this, "hass-more-info", { entityId: row.dataset.entity });
+        fireEvent(this, "hass-more-info", { entityId: el.dataset.entity });
       });
     });
   }
