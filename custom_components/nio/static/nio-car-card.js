@@ -168,10 +168,29 @@ class NioCarCard extends HTMLElement {
   }
 
   setConfig(config) {
+    const prev = this._config || {};
     this._config = config || {};
-    this._entities = null;
-    this._resolving = false;
-    this._render();
+    const deviceChanged = prev.device_id !== this._config.device_id;
+    const visualChanged =
+      prev.model !== this._config.model ||
+      prev.color !== this._config.color ||
+      prev.bg_image !== this._config.bg_image ||
+      prev.bg_gradient !== this._config.bg_gradient ||
+      prev.show_labels !== this._config.show_labels ||
+      prev.bar_opacity !== this._config.bar_opacity ||
+      prev.image !== this._config.image ||
+      JSON.stringify(prev.bg_color) !== JSON.stringify(this._config.bg_color) ||
+      JSON.stringify(prev.bar_color) !== JSON.stringify(this._config.bar_color);
+    if (deviceChanged) {
+      this._entities = null;
+      this._resolving = false;
+    }
+    if (!this.shadowRoot || visualChanged || deviceChanged) {
+      this._render();
+      return;
+    }
+    const nameEl = this.shadowRoot.getElementById("card-name");
+    if (nameEl) nameEl.textContent = this._nameOnly();
   }
 
   set hass(hass) {
@@ -293,7 +312,7 @@ class NioCarCard extends HTMLElement {
         <div class="canvas">
         <div class="img-wrap" id="img"><img src="${this._imageUrl()}" alt=""></div>
         <div class="bar" id="bar">
-          <span class="title"><span class="brand"></span><span>${this._nameOnly()}</span><span class="range" id="range"></span></span>
+          <span class="title"><span class="brand"></span><span id="card-name">${this._nameOnly()}</span><span class="range" id="range"></span></span>
           <div class="icons">
             ${iconItems
               .map(
@@ -605,13 +624,27 @@ class NioCarCard extends HTMLElement {
 
 class NioCarCardEditor extends HTMLElement {
   setConfig(config) {
-    this._config = { ...config };
-    this._render();
+    const prev = this._config || {};
+    this._config = { ...(config || {}) };
+    if (!this._mounted) {
+      this._render();
+      return;
+    }
+    // Parent echoes config on every keystroke — do not rewrite ha-form.data
+    // or the input loses focus / IME composition (Chinese input breaks).
+    if (prev.model !== this._config.model) {
+      this._renderSwatches();
+    }
+    this._updatePickerUi();
   }
 
   set hass(hass) {
     this._hass = hass;
     if (this._form) this._form.hass = hass;
+  }
+
+  _formData() {
+    return { bar_opacity: 40, show_labels: true, bg_gradient: true, ...this._config };
   }
 
   _schema() {
@@ -620,15 +653,67 @@ class NioCarCardEditor extends HTMLElement {
         name: "device_id",
         selector: { device: { integration: "nio" } },
       },
-      { name: "name", selector: { text: {} } },
+      { name: "name", selector: { text: { type: "text" } } },
       {
         name: "bar_opacity",
         selector: { number: { min: 0, max: 100, step: 5, mode: "slider", unit_of_measurement: "%" } },
       },
       { name: "show_labels", selector: { boolean: {} } },
       { name: "bg_gradient", selector: { boolean: {} } },
-      { name: "bg_image", selector: { text: {} } },
+      { name: "bg_image", selector: { text: { type: "text" } } },
     ];
+  }
+
+  _toHex(arr, fallback) {
+    return Array.isArray(arr)
+      ? "#" + arr.map((x) => Math.max(0, Math.min(255, x)).toString(16).padStart(2, "0")).join("")
+      : fallback;
+  }
+
+  _hexToRgb(hex) {
+    return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  }
+
+  _updatePickerUi() {
+    if (!this.shadowRoot) return;
+    const model = this._config.model || "ec6";
+    const color = this._config.color || "";
+    this.shadowRoot.querySelectorAll(".chip").forEach((el) => {
+      el.classList.toggle("sel", el.dataset.model === model);
+    });
+    this.shadowRoot.querySelectorAll(".sw").forEach((el) => {
+      el.classList.toggle("sel", el.dataset.color === color);
+    });
+    const bgc = this.shadowRoot.getElementById("bgc");
+    const barc = this.shadowRoot.getElementById("barc");
+    if (bgc) bgc.value = this._toHex(this._config.bg_color, "#f0f0f0");
+    if (barc) barc.value = this._toHex(this._config.bar_color, "#000000");
+  }
+
+  _renderSwatches() {
+    if (!this.shadowRoot || !this._manifest) return;
+    const model = this._config.model || Object.keys(this._manifest)[0] || "ec6";
+    const colors = this._manifest[model]?.colors || [];
+    const box = this.shadowRoot.querySelector(".swatches");
+    if (!box) return;
+    box.innerHTML = colors
+      .map((c) => {
+        const img =
+          (c.thumb ? `${STATIC_BASE}/cars/${c.thumb}` : `${STATIC_BASE}/cars/${c.file}`) +
+          `?a=${ASSET_VER}`;
+        const sel = c.slug === (this._config.color || "");
+        return `<div class="sw ${sel ? "sel" : ""}" data-color="${c.slug}" title="${c.zh || c.slug}">
+                  <img src="${img}" loading="lazy"><div class="nm">${c.zh || c.slug}</div>
+                </div>`;
+      })
+      .join("");
+    box.querySelectorAll(".sw").forEach((el) =>
+      el.addEventListener("click", () => {
+        this._config = { ...this._config, color: el.dataset.color };
+        this._emit();
+        this._updatePickerUi();
+      })
+    );
   }
 
   async _render() {
@@ -637,13 +722,8 @@ class NioCarCardEditor extends HTMLElement {
     this._manifest = manifest;
     const model = this._config.model || Object.keys(manifest)[0] || "ec6";
     const colors = manifest[model]?.colors || [];
-
-    const toHex = (arr, fallback) =>
-      Array.isArray(arr)
-        ? "#" + arr.map((x) => Math.max(0, Math.min(255, x)).toString(16).padStart(2, "0")).join("")
-        : fallback;
-    const hexBg = toHex(this._config.bg_color, "#f0f0f0");
-    const hexBar = toHex(this._config.bar_color, "#000000");
+    const hexBg = this._toHex(this._config.bg_color, "#f0f0f0");
+    const hexBar = this._toHex(this._config.bar_color, "#000000");
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -687,7 +767,9 @@ class NioCarCardEditor extends HTMLElement {
       <div class="swatches">
         ${colors
           .map((c) => {
-            const img = (c.thumb ? `${STATIC_BASE}/cars/${c.thumb}` : `${STATIC_BASE}/cars/${c.file}`) + `?a=${ASSET_VER}`;
+            const img =
+              (c.thumb ? `${STATIC_BASE}/cars/${c.thumb}` : `${STATIC_BASE}/cars/${c.file}`) +
+              `?a=${ASSET_VER}`;
             const sel = c.slug === (this._config.color || "");
             return `<div class="sw ${sel ? "sel" : ""}" data-color="${c.slug}" title="${c.zh || c.slug}">
                       <img src="${img}" loading="lazy"><div class="nm">${c.zh || c.slug}</div>
@@ -699,7 +781,7 @@ class NioCarCardEditor extends HTMLElement {
 
     const form = document.createElement("ha-form");
     form.hass = this._hass;
-    form.data = { bar_opacity: 40, show_labels: true, bg_gradient: true, ...this._config };
+    form.data = this._formData();
     form.schema = this._schema();
     form.computeLabel = (s) =>
       ({
@@ -719,10 +801,9 @@ class NioCarCardEditor extends HTMLElement {
     this.shadowRoot.getElementById("form").appendChild(form);
     this._form = form;
 
-    const hexToRgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
     const wireColor = (inputId, clearId, key) => {
       this.shadowRoot.getElementById(inputId).addEventListener("change", (ev) => {
-        this._config = { ...this._config, [key]: hexToRgb(ev.target.value) };
+        this._config = { ...this._config, [key]: this._hexToRgb(ev.target.value) };
         this._emit();
       });
       this.shadowRoot.getElementById(clearId).addEventListener("click", () => {
@@ -730,7 +811,7 @@ class NioCarCardEditor extends HTMLElement {
         delete next[key];
         this._config = next;
         this._emit();
-        this._render();
+        this._updatePickerUi();
       });
     };
     wireColor("bgc", "bgc_clr", "bg_color");
@@ -742,16 +823,19 @@ class NioCarCardEditor extends HTMLElement {
         const first = this._manifest[m]?.colors?.[0]?.slug || "cloud_white";
         this._config = { ...this._config, model: m, color: first };
         this._emit();
-        this._render();
+        this._renderSwatches();
+        this._updatePickerUi();
       })
     );
     this.shadowRoot.querySelectorAll(".sw").forEach((el) =>
       el.addEventListener("click", () => {
         this._config = { ...this._config, color: el.dataset.color };
         this._emit();
-        this._render();
+        this._updatePickerUi();
       })
     );
+
+    this._mounted = true;
   }
 
   _emit() {
