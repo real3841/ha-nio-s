@@ -11,22 +11,32 @@
       },
       "vehicle": {
         "title": "连接你的蔚来汽车",
-        "description": "用抓包工具嗅探 NIO App 的一次车辆状态请求（icar.nio.com/api/2/rvs/vehicle/.../status），把整条请求 URL 原样粘贴到下面，再填 Authorization Bearer token。URL 会被原样重放，请勿改动。",
+        "description": "用抓包工具嗅探 NIO App 的一次车辆状态请求（icar.nio.com/api/2/rvs/vehicle/.../status），在下方三个输入框中填写 URL、Token 和车型。URL 会被原样重放，请勿改动。",
         "data": {
-          "capture": "抓到的状态请求 URL（整条 .../status?... ）",
-          "token": "Bearer token（Authorization 头）",
+          "capture": "状态请求 URL",
+          "token": "Bearer Token",
           "model": "车型"
+        },
+        "data_description": {
+          "capture": "粘贴整条 .../status?...&sign=... 请求 URL",
+          "token": "粘贴 Authorization 头里的 Bearer token",
+          "model": "例如 EC6、ES6、ET5"
         }
       },
       "change": {
         "title": "连接蔚来服务订单",
-        "description": "从 Postman 或 NIO App 抓取 getTabOrder 请求（gateway-front-external.nio.com/.../serviceOrder/getTabOrder?...）。粘贴完整 URL（通常为 POST + Query Params）、Bearer token；若抓包含 Cookie 也请填写。",
+        "description": "从 Postman 或 NIO App 抓取 getTabOrder 请求，在下方填写 URL、Token 等信息。",
         "data": {
-          "capture": "抓到的 getTabOrder 请求 URL",
-          "token": "Bearer token（Authorization 头）",
+          "capture": "getTabOrder 请求 URL",
+          "token": "Bearer Token",
           "change_name": "显示名称",
-          "cookie": "Cookie 头（可选）",
+          "cookie": "Cookie（可选）",
           "change_method": "HTTP 方法"
+        },
+        "data_description": {
+          "capture": "粘贴 gateway-front-external.nio.com/.../getTabOrder?... 完整 URL",
+          "token": "粘贴 Authorization 头里的 Bearer token",
+          "cookie": "若抓包含 tgw_l7_route=... 请填写"
         }
       },
       "reauth_confirm": {

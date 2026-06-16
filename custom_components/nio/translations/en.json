@@ -11,11 +11,16 @@
       },
       "vehicle": {
         "title": "Connect your NIO vehicle",
-        "description": "Sniff one vehicle-status request from the NIO app (MITM proxy: icar.nio.com/api/2/rvs/vehicle/.../status) and paste the whole request URL below, plus its Authorization Bearer token. The URL is replayed exactly as captured — don't edit it.",
+        "description": "Sniff one vehicle-status request from the NIO app, then fill in the URL, token and model below. The URL is replayed exactly as captured — don't edit it.",
         "data": {
-          "capture": "Captured status request URL (the whole .../status?... line)",
-          "token": "Bearer token (Authorization header)",
+          "capture": "Status request URL",
+          "token": "Bearer token",
           "model": "Vehicle model"
+        },
+        "data_description": {
+          "capture": "Paste the whole .../status?...&sign=... request URL",
+          "token": "Paste the Bearer token from the Authorization header",
+          "model": "e.g. EC6, ES6, ET5"
         }
       },
       "change": {

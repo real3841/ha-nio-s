@@ -69,7 +69,12 @@ CONF_CAPTURE = "capture"
 
 
 def _capture_box() -> TextSelector:
-    return TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT, multiline=True))
+    """Single-line URL field — multiline renders as chevron rows on mobile HA."""
+    return TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT))
+
+
+def _text_box() -> TextSelector:
+    return TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT))
 
 
 def _secret() -> TextSelector:
@@ -84,7 +89,7 @@ VEHICLE_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_CAPTURE): _capture_box(),
         vol.Required(CONF_TOKEN): _secret(),
-        vol.Optional(CONF_MODEL, default=DEFAULT_MODEL): str,
+        vol.Optional(CONF_MODEL, default=DEFAULT_MODEL): _text_box(),
     }
 )
 
@@ -92,8 +97,8 @@ CHANGE_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_CAPTURE): _capture_box(),
         vol.Required(CONF_TOKEN): _secret(),
-        vol.Optional(CONF_CHANGE_NAME, default="NIO 换电记录"): str,
-        vol.Optional(CONF_COOKIE, default=""): str,
+        vol.Optional(CONF_CHANGE_NAME, default="NIO 换电记录"): _text_box(),
+        vol.Optional(CONF_COOKIE, default=""): _text_box(),
         vol.Optional(
             CONF_CHANGE_METHOD,
             default=DEFAULT_CHANGE_METHOD,
@@ -163,7 +168,7 @@ def _change_credentials_schema(entry: ConfigEntry) -> vol.Schema:
         {
             vol.Required(CONF_TOKEN, default=entry.data.get(CONF_TOKEN, "")): _secret(),
             vol.Optional(CONF_CAPTURE, default=""): _capture_box(),
-            vol.Optional(CONF_COOKIE, default=entry.data.get(CONF_COOKIE, "")): str,
+            vol.Optional(CONF_COOKIE, default=entry.data.get(CONF_COOKIE, "")): _text_box(),
         }
     )
 
