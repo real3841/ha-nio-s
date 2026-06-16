@@ -1,0 +1,223 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "NIO 集成",
+        "description": "选择要连接的内容。车辆状态与换电/服务订单使用不同的 API，需要分别添加。车辆信息可单独运行；换电记录为可选项。",
+        "menu_options": {
+          "vehicle": "车辆状态",
+          "change": "换电 / 服务订单（可选）"
+        }
+      },
+      "vehicle": {
+        "title": "连接你的蔚来汽车",
+        "description": "用抓包工具嗅探 NIO App 的一次车辆状态请求（icar.nio.com/api/2/rvs/vehicle/.../status），把整条请求 URL 原样粘贴到下面，再填 Authorization Bearer token。URL 会被原样重放，请勿改动。",
+        "data": {
+          "capture": "抓到的状态请求 URL（整条 .../status?... ）",
+          "token": "Bearer token（Authorization 头）",
+          "model": "车型"
+        }
+      },
+      "change": {
+        "title": "连接蔚来服务订单",
+        "description": "从 Postman 或 NIO App 抓取 getTabOrder 请求（gateway-front-external.nio.com/.../serviceOrder/getTabOrder?...）。粘贴完整 URL（通常为 POST + Query Params）、Bearer token；若抓包含 Cookie 也请填写。",
+        "data": {
+          "capture": "抓到的 getTabOrder 请求 URL",
+          "token": "Bearer token（Authorization 头）",
+          "change_name": "显示名称",
+          "cookie": "Cookie 头（可选）",
+          "change_method": "HTTP 方法"
+        }
+      },
+      "reauth_confirm": {
+        "title": "重新认证 NIO",
+        "description": "粘贴新的 Bearer token。若是签名被拒（车辆）或 URL 变更，再粘贴一条新抓的请求 URL。",
+        "data": {
+          "token": "Bearer token（Authorization 头）",
+          "capture": "抓到的请求 URL（可选——仅在重新抓包时填）",
+          "cookie": "Cookie 头（可选，仅服务订单）"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "NIO API 拒绝了该 token。请重新抓一个新的 Bearer token。",
+      "invalid_sign": "NIO API 拒绝的是签名、不是 token——请重新抓一次当前的状态请求。",
+      "invalid_url": "无法识别为车辆状态请求。请把包含 /vehicle/.../status?...&sign=... 的整行粘进来。",
+      "invalid_change_url": "无法识别为服务订单请求。请粘贴带 query 参数的 getTabOrder URL。",
+      "cannot_connect": "无法连接 NIO API。"
+    },
+    "abort": {
+      "already_configured": "该配置已存在。",
+      "reauth_successful": "重新认证成功。"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "NIO 选项",
+        "menu_options": {
+          "intervals": "刷新频率",
+          "credentials": "认证（Token）",
+          "interval": "刷新间隔"
+        }
+      },
+      "intervals": {
+        "title": "刷新频率",
+        "description": "私有 API 调用太频繁会被 NIO 限流甚至导致 token 失效。",
+        "data": {
+          "interval_driving": "驾驶中刷新间隔（分钟）",
+          "interval_day": "白天刷新间隔（分钟）",
+          "interval_night": "夜间刷新间隔（分钟）",
+          "day_start_hour": "白天开始（时）",
+          "day_end_hour": "白天结束（时）"
+        }
+      },
+      "interval": {
+        "title": "服务订单刷新",
+        "description": "换电与服务订单历史的拉取频率。",
+        "data": {
+          "change_interval": "刷新间隔（分钟）"
+        }
+      },
+      "credentials": {
+        "title": "更新认证",
+        "description": "粘贴新的 Bearer token。若想顺便刷新抓包请求，再粘贴一条新抓的 URL。",
+        "data": {
+          "token": "Bearer token（Authorization 头）",
+          "capture": "抓到的请求 URL（可选——仅在重新抓包时填）",
+          "cookie": "Cookie 头（可选，仅服务订单）"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "NIO API 拒绝了该 token。请重新抓一个新的 Bearer token。",
+      "invalid_sign": "NIO API 拒绝的是签名——请重新抓一次当前的状态请求。",
+      "invalid_url": "无法识别为车辆状态请求。",
+      "invalid_change_url": "无法识别为服务订单请求。",
+      "cannot_connect": "无法连接 NIO API。"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "battery": { "name": "电池电量" },
+      "remaining_range": { "name": "续航(CLTC)" },
+      "remaining_actual_range": { "name": "续航(实际)" },
+      "range_achievement_rate": { "name": "续航达成率" },
+      "vehicle_state": {
+        "name": "车辆状态",
+        "state": {
+          "driving": "驾驶中",
+          "parked": "已停止",
+          "resting": "驻车休息",
+          "unknown": "未知"
+        }
+      },
+      "charging_power": { "name": "充电功率" },
+      "inside_temperature": { "name": "车内温度" },
+      "outside_temperature": { "name": "车外温度" },
+      "mileage": { "name": "总里程" },
+      "tyre_pressure_front_left": { "name": "胎压·左前" },
+      "tyre_pressure_front_right": { "name": "胎压·右前" },
+      "tyre_pressure_rear_left": { "name": "胎压·左后" },
+      "tyre_pressure_rear_right": { "name": "胎压·右后" },
+      "fota_version": { "name": "固件版本" },
+      "alerts": { "name": "告警" },
+      "charge_state": {
+        "name": "充电状态",
+        "state": {
+          "not_charging": "未充电",
+          "charging": "充电中",
+          "complete": "充电完成",
+          "fault": "充电故障"
+        }
+      },
+      "full_charge_range": { "name": "满电续航" },
+      "battery_pack": {
+        "name": "电池包",
+        "state": {
+          "75kwh": "75度",
+          "100kwh": "100度",
+          "unknown": "未知"
+        }
+      },
+      "checked_in_days": { "name": "连续用车天数" },
+      "steer_wheel_heat": {
+        "name": "方向盘加热",
+        "state": {
+          "off": "关闭",
+          "low": "低",
+          "medium": "中",
+          "high": "高"
+        }
+      },
+      "seat_heat_front": {
+        "name": "前排座椅加热",
+        "state": {
+          "off": "关闭",
+          "low": "低",
+          "medium": "中",
+          "high": "高"
+        }
+      },
+      "seat_heat_rear": {
+        "name": "后排座椅加热",
+        "state": {
+          "off": "关闭",
+          "low": "低",
+          "medium": "中",
+          "high": "高"
+        }
+      },
+      "seat_ventilation": {
+        "name": "座椅通风",
+        "state": {
+          "off": "关闭",
+          "low": "低",
+          "medium": "中",
+          "high": "高"
+        }
+      },
+      "maintenance": { "name": "维保提醒" },
+      "service_orders_total": { "name": "服务订单总数" },
+      "swap_completed": { "name": "换电完成次数" },
+      "swap_cancelled": { "name": "换电取消次数" },
+      "swap_spent": { "name": "换电累计花费" },
+      "swap_avg_spent": { "name": "换电平均花费" },
+      "upgrade_completed": { "name": "灵活升级完成次数" },
+      "upgrade_spent": { "name": "灵活升级累计花费" },
+      "last_service_order": { "name": "最近服务订单" }
+    },
+    "binary_sensor": {
+      "driving": { "name": "驾驶状态" },
+      "sleeping": { "name": "睡眠状态" },
+      "door": { "name": "车门" },
+      "window": { "name": "车窗" },
+      "lock": { "name": "车锁" },
+      "charging": { "name": "充电中" },
+      "connected": { "name": "云端连接" },
+      "alert_active": { "name": "存在告警" },
+      "battery_critical": { "name": "电量极低" },
+      "battery_low": { "name": "电量偏低" },
+      "adc_offline": { "name": "ADC 离线" },
+      "cdc_connected": { "name": "CDC 连接" },
+      "maintenance_due": { "name": "待维保" },
+      "server_alarm": { "name": "服务端告警" },
+      "air_conditioner": { "name": "空调" },
+      "hood": { "name": "前备箱" },
+      "tailgate": { "name": "尾门" },
+      "charge_port": { "name": "充电口" },
+      "pet_mode": { "name": "宠物模式" },
+      "power_hold_mode": { "name": "离车不下电" },
+      "camping_mode": { "name": "露营模式" },
+      "defender_mode": { "name": "守卫模式" },
+      "remote_video": { "name": "远程查看" }
+    },
+    "device_tracker": {
+      "location": { "name": "位置" }
+    },
+    "button": {
+      "refresh": { "name": "数据刷新" },
+      "refresh_change": { "name": "刷新服务订单" }
+    }
+  }
+}

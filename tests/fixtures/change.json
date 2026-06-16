@@ -1,0 +1,1882 @@
+{
+  "resultCode": "0000",
+  "resultDesc": "success",
+  "resultData": {
+    "data": [
+      {
+        "orderType": "nsom_so_maintenance",
+        "orderName": "一键维保",
+        "createTime": 1780286700000,
+        "orderStatus": "100",
+        "orderStatusName": "服务已完成",
+        "orderNo": "845297086700070077",
+        "address": "辽宁省大连市甘井子区华东路161号",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://so/new_servicedetail?order_no=845297086700070077",
+        "paymentStatus": "0",
+        "oipStatus": 2,
+        "extendInfo": {
+          "order_finish_info": {
+            "copy_writing": "完成于%s",
+            "finish_time": 1780368775
+          },
+          "expectedServiceTime": "1780363800",
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 1,
+          "maintenance_report_url": "nio://so/new_servicedetail?order_no=845297086700070077",
+          "expected_service_location": {
+            "poi_address": "辽宁省大连市甘井子区华东路161号",
+            "poi_name": "蔚来服务中心 | 大连华南",
+            "poi_latitude": 38.997259,
+            "type": 14,
+            "poi_id": "nio:dealer:DLCCDS1",
+            "poi_longitude": 121.595687,
+            "poi_area": "210211"
+          },
+          "dealer_info": {
+            "dealer_code": "DLCCDS1",
+            "dealer_address": "辽宁省大连市甘井子区华东路161号",
+            "dealer_name": "大连华南"
+          },
+          "pre_inspection_report_url": "nio://so/new_servicedetail?order_no=845297086700070077",
+          "expected_serve_time": 1780363800,
+          "total_fee": "总费用¥ %s",
+          "house_keeper_info": {
+            "house_keeper_name": "杨世杰",
+            "house_keeper_id": "shijie.yang5"
+          },
+          "compound_status": 10000100,
+          "maintenance_requirement": {
+            "copy_writing": "本次服务需求：%s",
+            "polymerization_maintenance_requirements": [
+              {
+                "code": "20010000",
+                "description": "保养"
+              }
+            ]
+          },
+          "estimated_finish_info": {
+            "installation_copywriting": "预计%s完成安装",
+            "copywriting": "预计%s完成维修",
+            "estimated_finish_time": 1780374998
+          }
+        }
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1777886559000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "26.21",
+        "payDesc": "¥ 26.21",
+        "isRight": false,
+        "orderNo": "825967294686558523",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967294686558523",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1777874983000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "79.36",
+        "payDesc": "¥ 79.36",
+        "isRight": false,
+        "orderNo": "825364294674982215",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364294674982215",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1777865857000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "83.05",
+        "payDesc": "¥ 83.05",
+        "isRight": false,
+        "orderNo": "825805294665856926",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G1京哈高速沈阳世代车城 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825805294665856926",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "battery_flexible_upgrade",
+        "orderName": "灵活升级",
+        "createTime": 1777863839000,
+        "orderStatus": "1000",
+        "orderStatusName": "服务已完成",
+        "orderNo": "838294663839873361",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://battery_rent/order?order_id=838294663839873361",
+        "paymentStatus": "4",
+        "pickUpName": "G1京哈高速沈阳世代车城 蔚来换电站",
+        "returnName": "大连甘井子区政府北 蔚来换电站",
+        "oipStatus": 2,
+        "extendInfo": {
+          "batteryCapSeries": 3,
+          "targetBatteryCapLevel": 2,
+          "pickUpOverdue": false,
+          "returnOverdue": false,
+          "batteryCapLevel": 1,
+          "targetBatteryCapSeries": 2,
+          "paymentInfo": [
+            {
+              "amount": 83,
+              "name": "长续航级（100kWh）按月灵活升级费用",
+              "type": 5
+            }
+          ],
+          "payInArrears": false
+        }
+      },
+      {
+        "orderType": "battery_flexible_upgrade",
+        "orderName": "灵活升级",
+        "createTime": 1777862057000,
+        "orderStatus": "900",
+        "orderStatusName": "服务已取消",
+        "orderNo": "838294662057901702",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://battery_rent/order?order_id=838294662057901702",
+        "paymentStatus": "100",
+        "oipStatus": 2,
+        "extendInfo": {
+          "batteryCapSeries": 3,
+          "targetBatteryCapLevel": 2,
+          "pickUpOverdue": false,
+          "returnOverdue": false,
+          "batteryCapLevel": 1,
+          "targetBatteryCapSeries": 2,
+          "paymentInfo": [],
+          "payInArrears": false
+        }
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1777532421000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "45.37",
+        "payDesc": "¥ 45.37",
+        "isRight": false,
+        "orderNo": "825239294332420926",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239294332420926",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1777532019000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825239294332018474",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239294332018474",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1777523785000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "44.15",
+        "payDesc": "¥ 44.15",
+        "isRight": false,
+        "orderNo": "825364294323784025",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364294323784025",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1777510061000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "60.14",
+        "payDesc": "¥ 60.14",
+        "isRight": false,
+        "orderNo": "825763294310060109",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连东港国际会议中心 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825763294310060109",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "battery_flexible_upgrade",
+        "orderName": "灵活升级",
+        "createTime": 1777509871000,
+        "orderStatus": "1000",
+        "orderStatusName": "服务已完成",
+        "orderNo": "838294309871755666",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://battery_rent/order?order_id=838294309871755666",
+        "paymentStatus": "4",
+        "pickUpName": "大连东港国际会议中心 蔚来换电站",
+        "returnName": "沈阳沈北万达广场 蔚来换电站",
+        "oipStatus": 2,
+        "extendInfo": {
+          "batteryCapSeries": 3,
+          "targetBatteryCapLevel": 2,
+          "pickUpOverdue": false,
+          "returnOverdue": false,
+          "batteryCapLevel": 1,
+          "targetBatteryCapSeries": 2,
+          "paymentInfo": [
+            {
+              "amount": 98,
+              "name": "长续航级（100kWh）按月灵活升级费用",
+              "type": 5
+            }
+          ],
+          "payInArrears": false
+        }
+      },
+      {
+        "orderType": "nsom_so_chauffeur",
+        "orderName": "驾享服务",
+        "createTime": 1775694316000,
+        "orderStatus": "100",
+        "orderStatusName": "已支付",
+        "orderNo": "763292494316578005",
+        "address": "辽宁省大连市甘井子区万景街与和硕街交叉口正东方向195米左右",
+        "url": "nio://nioride/service_detail?order_no=763292494316578005",
+        "paymentStatus": "2",
+        "oipStatus": 2,
+        "extendInfo": {
+          "order_finish_info": {
+            "copy_writing": "完成于%s",
+            "finish_time": 1775780811
+          },
+          "expected_service_location": {
+            "order_no": "763292494316578005",
+            "poi_address": "辽宁省大连市甘井子区万景街与和硕街交叉口正东方向195米左右",
+            "location_info_id": 42630692,
+            "remark": "",
+            "serial_number": 0,
+            "type": 14,
+            "garage_info": "钻石湾滨海公园停车场",
+            "poi_longitude": 121.61829,
+            "poi_area": "210211",
+            "operator": "",
+            "poi_name": "钻石湾世界滨海公园停车点",
+            "poi_latitude": 38.952296,
+            "sub_order_no": "",
+            "biz_no": "",
+            "alias": "",
+            "poi_id": "qq:9088755169281849859"
+          },
+          "total_fee": "总费用¥ %s",
+          "house_keeper_info": {
+            "house_keeper_id": ""
+          },
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 5,
+          "compound_status": 10213005
+        }
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775531988000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "35.24",
+        "payDesc": "¥ 35.24",
+        "isRight": false,
+        "orderNo": "825967292331987200",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967292331987200",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825967292331987200",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775457951000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "87.67",
+        "payDesc": "¥ 87.67",
+        "isRight": false,
+        "orderNo": "825364292257951542",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364292257951542",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825364292257951542",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775457766000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825364292257766117",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364292257766117",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775457685000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825364292257684471",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364292257684471",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775449381000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "67.72",
+        "payDesc": "¥ 67.72",
+        "isRight": false,
+        "orderNo": "825173292249380608",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳理工大学 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825173292249380608",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825173292249380608",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "battery_flexible_upgrade",
+        "orderName": "灵活升级",
+        "createTime": 1775447795000,
+        "orderStatus": "1000",
+        "orderStatusName": "服务已完成",
+        "orderNo": "838292247795551122",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://battery_rent/order?order_id=838292247795551122",
+        "buttons": [
+          {
+            "name": "立即评价",
+            "url": "nio://battery_rent/order?order_id=838292247795551122",
+            "code": "peFlexibleUpgradeImmComment",
+            "sort": 2,
+            "type": null,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "4",
+        "pickUpName": "沈阳理工大学 蔚来换电站",
+        "returnName": "大连甘井子区政府北 蔚来换电站",
+        "oipStatus": 2,
+        "extendInfo": {
+          "batteryCapSeries": 3,
+          "targetBatteryCapLevel": 2,
+          "pickUpOverdue": false,
+          "returnOverdue": false,
+          "batteryCapLevel": 1,
+          "targetBatteryCapSeries": 2,
+          "paymentInfo": [
+            {
+              "amount": 50,
+              "name": "长续航级（100kWh）按月灵活升级费用",
+              "type": 5
+            }
+          ],
+          "payInArrears": false
+        }
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775310202000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "64.53",
+        "payDesc": "¥ 64.53",
+        "isRight": false,
+        "orderNo": "825239292110201862",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239292110201862",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825239292110201862",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775310137000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825239292110136620",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239292110136620",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775310002000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825239292110001056",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239292110001056",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775226314000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "51.91",
+        "payDesc": "¥ 51.91",
+        "isRight": false,
+        "orderNo": "825295292026313801",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "鞍山金磊特 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825295292026313801",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825295292026313801",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1775218044000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "67.84",
+        "payDesc": "¥ 67.84",
+        "isRight": false,
+        "orderNo": "825364292018043187",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364292018043187",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825364292018043187",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "nsom_so_maintenance",
+        "orderName": "一键维保",
+        "createTime": 1774152149000,
+        "orderStatus": "100",
+        "orderStatusName": "服务已完成",
+        "orderNo": "845290952149550858",
+        "address": "辽宁省大连市甘井子区华东路161号",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://so/new_servicedetail?order_no=845290952149550858",
+        "paymentStatus": "0",
+        "oipStatus": 2,
+        "extendInfo": {
+          "order_finish_info": {
+            "copy_writing": "完成于%s",
+            "finish_time": 1774261625
+          },
+          "expectedServiceTime": "1774153800",
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 1,
+          "maintenance_report_url": "nio://so/new_servicedetail?order_no=845290952149550858",
+          "expected_service_location": {
+            "poi_address": "辽宁省大连市甘井子区华东路161号",
+            "poi_name": "蔚来服务中心 | 大连华南",
+            "poi_latitude": 38.997259,
+            "type": 14,
+            "poi_id": "nio:dealer:DLCCDS1",
+            "poi_longitude": 121.595687,
+            "poi_area": "210211"
+          },
+          "dealer_info": {
+            "dealer_code": "DLCCDS1",
+            "dealer_address": "辽宁省大连市甘井子区华东路161号",
+            "dealer_name": "大连华南"
+          },
+          "pre_inspection_report_url": "nio://so/new_servicedetail?order_no=845290952149550858",
+          "expected_serve_time": 1774153800,
+          "total_fee": "总费用¥ %s",
+          "house_keeper_info": {
+            "house_keeper_name": "隋国峰",
+            "house_keeper_id": "sam.sui"
+          },
+          "compound_status": 10000100,
+          "maintenance_requirement": {
+            "copy_writing": "本次服务需求：%s",
+            "polymerization_maintenance_requirements": [
+              {
+                "code": "20200000",
+                "description": "事故"
+              }
+            ]
+          },
+          "estimated_finish_info": {
+            "installation_copywriting": "预计%s完成安装",
+            "copywriting": "预计%s完成维修",
+            "estimated_finish_time": 1774340820
+          }
+        }
+      },
+      {
+        "orderType": "so_case_accident",
+        "orderName": "事故报案",
+        "createTime": 1774149235000,
+        "orderStatus": "13",
+        "orderStatusName": "赔付完成",
+        "cashChooseType": "1",
+        "orderNo": "ACS2026032255840RFUQ",
+        "address": "辽宁省大连市甘井子区辛寨子街道辛寨子广场公交站附近虹港路557号",
+        "url": "https://app.nio.com/app/accident_report_h5/module_10120/reportDetail/ACS2026032255840RFUQ?isFromSource=oip&is_nav_show=false&wv=lg",
+        "paymentStatus": "1",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "so_case_accident",
+        "orderName": "事故报案",
+        "createTime": 1774078131000,
+        "orderStatus": "14",
+        "orderStatusName": "已销案",
+        "cashChooseType": "1",
+        "orderNo": "ACS2026032152267LBNB",
+        "address": "辽宁省大连市西岗区中山路154号",
+        "url": "https://app.nio.com/app/accident_report_h5/module_10120/reportDetail/ACS2026032152267LBNB?isFromSource=oip&is_nav_show=false&wv=lg",
+        "paymentStatus": "1",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1771821130000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825364288621129624",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364288621129624",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825364288621129624",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1771737245000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "63.07",
+        "payDesc": "¥ 63.07",
+        "isRight": false,
+        "orderNo": "825295288537244949",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "鞍山金磊特 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825295288537244949",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825295288537244949",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1771550594000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "73.00",
+        "payDesc": "¥ 73",
+        "isRight": false,
+        "orderNo": "825685288350594104",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳大东龙之梦 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825685288350594104",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825685288350594104",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1771220037000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "58.58",
+        "payDesc": "¥ 58.58",
+        "isRight": false,
+        "orderNo": "825239288020036131",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239288020036131",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825239288020036131",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1771155953000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825239287955953945",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239287955953945",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1771155138000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825239287955138528",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239287955138528",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1771150323000,
+        "orderStatus": "30",
+        "orderStatusName": "换电终止",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825239287950322027",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239287950322027",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1770884354000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "96.20",
+        "payDesc": "¥ 96.2",
+        "isRight": false,
+        "orderNo": "825239287684354538",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239287684354538",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825239287684354538",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1770869653000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "70.21",
+        "payDesc": "¥ 70.21",
+        "isRight": false,
+        "orderNo": "825364287669652873",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364287669652873",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825364287669652873",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1770341265000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "24.15",
+        "payDesc": "¥ 24.15",
+        "isRight": false,
+        "orderNo": "825967287141264545",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967287141264545",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825967287141264545",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "nsom_so_maintenance",
+        "orderName": "一键维保",
+        "createTime": 1770276702000,
+        "orderStatus": "400",
+        "orderStatusName": "服务已取消",
+        "orderNo": "845287076702131148",
+        "address": "辽宁省大连市甘井子区华东路161号",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://so/new_servicedetail?order_no=845287076702131148",
+        "paymentStatus": "0",
+        "oipStatus": 2,
+        "extendInfo": {
+          "expected_service_location": {
+            "poi_address": "辽宁省大连市甘井子区华东路161号",
+            "poi_name": "蔚来服务中心 | 大连华南",
+            "poi_latitude": 38.997259,
+            "type": 14,
+            "poi_id": "nio:dealer:DLCCDS1",
+            "poi_longitude": 121.595687,
+            "poi_area": "210211"
+          },
+          "dealer_info": {
+            "dealer_code": "DLCCDS1",
+            "dealer_address": "辽宁省大连市甘井子区华东路161号",
+            "dealer_name": "大连华南"
+          },
+          "expected_serve_time": 1770339600,
+          "total_fee": "总费用¥ %s",
+          "house_keeper_info": {
+            "house_keeper_name": "吕娅妮",
+            "house_keeper_id": "gracr.lv"
+          },
+          "expectedServiceTime": "1770339600",
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 1,
+          "compound_status": 10000400
+        }
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1769490693000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825967286290692889",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967286290692889",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825967286290692889",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "battery_flexible_upgrade",
+        "orderName": "灵活升级",
+        "createTime": 1769489812000,
+        "orderStatus": "1000",
+        "orderStatusName": "服务已完成",
+        "orderNo": "838286289812764604",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://battery_rent/order?order_id=838286289812764604",
+        "buttons": [
+          {
+            "name": "立即评价",
+            "url": "nio://battery_rent/order?order_id=838286289812764604",
+            "code": "peFlexibleUpgradeImmComment",
+            "sort": 2,
+            "type": null,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "4",
+        "pickUpName": "大连甘井子区政府北 蔚来换电站",
+        "returnName": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "oipStatus": 2,
+        "extendInfo": {
+          "batteryCapSeries": 0,
+          "targetBatteryCapLevel": 2,
+          "pickUpOverdue": false,
+          "returnOverdue": false,
+          "batteryCapLevel": 1,
+          "targetBatteryCapSeries": 2,
+          "paymentInfo": [
+            {
+              "amount": -100,
+              "name": "下单立减",
+              "type": 17
+            },
+            {
+              "amount": 880,
+              "name": "长续航级（100kWh）按月灵活升级费用",
+              "type": 5
+            }
+          ],
+          "payInArrears": false
+        }
+      },
+      {
+        "orderType": "nsom_so_chauffeur",
+        "orderName": "驾享服务",
+        "createTime": 1768639198000,
+        "orderStatus": "100",
+        "orderStatusName": "已支付",
+        "orderNo": "763285439198364948",
+        "address": "辽宁省大连市甘井子区南关岭路和华北路之间民悦广场附近",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://nioride/service_detail?order_no=763285439198364948",
+        "paymentStatus": "2",
+        "oipStatus": 2,
+        "extendInfo": {
+          "order_finish_info": {
+            "copy_writing": "完成于%s",
+            "finish_time": 1768728322
+          },
+          "expected_service_location": {
+            "order_no": "763285439198364948",
+            "poi_address": "辽宁省大连市甘井子区南关岭路和华北路之间民悦广场附近",
+            "location_info_id": 39469203,
+            "remark": "",
+            "serial_number": 0,
+            "type": 14,
+            "garage_info": "",
+            "poi_longitude": 121.60744,
+            "poi_area": "210211",
+            "operator": "",
+            "poi_name": "大连北站",
+            "poi_latitude": 39.016807,
+            "sub_order_no": "",
+            "biz_no": "",
+            "alias": "",
+            "poi_id": "qq:5189849238550701261"
+          },
+          "total_fee": "总费用¥ %s",
+          "house_keeper_info": {
+            "house_keeper_id": ""
+          },
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 5,
+          "compound_status": 10213005
+        }
+      },
+      {
+        "orderType": "chauffeur_vehicle_delivery",
+        "orderName": "一键送车",
+        "createTime": 1766821080000,
+        "orderStatus": "10263005",
+        "orderStatusName": "已支付",
+        "cashChooseType": "1",
+        "orderNo": "763283621080874893",
+        "address": "辽宁省大连市甘井子区安和街与悦彩街交叉口东南方向133米左右",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "https://pickup-nio.nio.com/module_10664/detail?wv=lg&is_nav_show=false&order_no=763283621080874893",
+        "paymentStatus": "0",
+        "oipStatus": 2,
+        "extendInfo": {
+          "order_finish_info": {
+            "copy_writing": "完成于%s",
+            "finish_time": 1766830008
+          },
+          "expected_service_location": {
+            "order_no": "763283621080874893",
+            "poi_address": "辽宁省大连市甘井子区华东路161号",
+            "location_info_id": 38628966,
+            "remark": "",
+            "serial_number": 0,
+            "type": 14,
+            "garage_info": "",
+            "poi_longitude": 121.595687,
+            "poi_area": "210211",
+            "operator": "",
+            "poi_name": "蔚来服务中心 | 大连华南",
+            "poi_latitude": 38.997259,
+            "sub_order_no": "",
+            "biz_no": "",
+            "alias": "",
+            "poi_id": "nio:dealer:DLCCDS1"
+          },
+          "payment_required": true,
+          "total_fee": "总费用¥ %s",
+          "payment_status": 2,
+          "house_keeper_info": {
+            "house_keeper_id": ""
+          },
+          "source": 1,
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 5,
+          "compound_status": 10263005,
+          "status": 100
+        }
+      },
+      {
+        "orderType": "nsom_so_maintenance",
+        "orderName": "一键维保",
+        "createTime": 1766820634000,
+        "orderStatus": "100",
+        "orderStatusName": "服务已完成",
+        "orderNo": "845283620634874801",
+        "address": "辽宁省大连市甘井子区华东路161号",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://so/new_servicedetail?order_no=845283620634874801",
+        "paymentStatus": "0",
+        "oipStatus": 2,
+        "extendInfo": {
+          "order_finish_info": {
+            "copy_writing": "完成于%s",
+            "finish_time": 1767171385
+          },
+          "expectedServiceTime": "1766883600",
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 1,
+          "maintenance_report_url": "nio://so/new_servicedetail?order_no=845283620634874801",
+          "expected_service_location": {
+            "poi_address": "辽宁省大连市甘井子区华东路161号",
+            "poi_name": "蔚来服务中心 | 大连华南",
+            "poi_latitude": 38.997259,
+            "type": 14,
+            "poi_id": "nio:dealer:DLCCDS1",
+            "poi_longitude": 121.595687,
+            "poi_area": "210211"
+          },
+          "dealer_info": {
+            "dealer_code": "DLCCDS1",
+            "dealer_address": "辽宁省大连市甘井子区华东路161号",
+            "dealer_name": "大连华南"
+          },
+          "pre_inspection_report_url": "nio://so/new_servicedetail?order_no=845283620634874801",
+          "expected_serve_time": 1766883600,
+          "total_fee": "总费用¥ %s",
+          "house_keeper_info": {
+            "house_keeper_name": "隋国峰",
+            "house_keeper_id": "sam.sui"
+          },
+          "compound_status": 10000100,
+          "maintenance_requirement": {
+            "copy_writing": "本次服务需求：%s",
+            "polymerization_maintenance_requirements": [
+              {
+                "code": "20090000",
+                "description": "其他需求"
+              },
+              {
+                "code": "20200000",
+                "description": "事故"
+              }
+            ]
+          },
+          "estimated_finish_info": {
+            "installation_copywriting": "预计%s完成安装",
+            "copywriting": "预计%s完成维修",
+            "estimated_finish_time": 1767172140
+          }
+        }
+      },
+      {
+        "orderType": "so_case_accident",
+        "orderName": "事故报案",
+        "createTime": 1766819528000,
+        "orderStatus": "13",
+        "orderStatusName": "赔付完成",
+        "cashChooseType": "1",
+        "orderNo": "ACS202512278485FXOV",
+        "address": "辽宁省大连市甘井子区安和街与悦彩街交叉口东南方向133米左右",
+        "url": "https://app.nio.com/app/accident_report_h5/module_10120/reportDetail/ACS202512278485FXOV?isFromSource=oip&is_nav_show=false&wv=lg",
+        "paymentStatus": "1",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1766661311000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825967283461310913",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967283461310913",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1764642892000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "57.68",
+        "payDesc": "¥ 57.68",
+        "isRight": false,
+        "orderNo": "825967281442892826",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967281442892826",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825967281442892826",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1763814035000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825967280614034621",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967280614034621",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1760067578000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825967276867577544",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967276867577544",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825967276867577544",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1760067466000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825967276867466634",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967276867466634",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1759808848000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "92.23",
+        "payDesc": "¥ 92.23",
+        "isRight": false,
+        "orderNo": "825364276608847335",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364276608847335",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825364276608847335",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1759673781000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "54.59",
+        "payDesc": "¥ 54.59",
+        "isRight": false,
+        "orderNo": "825239276473780376",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239276473780376",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825239276473780376",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1759327644000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "74.35",
+        "payDesc": "¥ 74.35",
+        "isRight": false,
+        "orderNo": "825239276127644052",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239276127644052",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825239276127644052",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1759316045000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825239276116044492",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "沈阳沈北万达广场 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825239276116044492",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1759228675000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "73.67",
+        "payDesc": "¥ 73.67",
+        "isRight": false,
+        "orderNo": "825364276028674785",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "G15沈海高速红星美凯龙鲅鱼圈店 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825364276028674785",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825364276028674785",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "nsom_so_maintenance",
+        "orderName": "一键维保",
+        "createTime": 1758774388000,
+        "orderStatus": "100",
+        "orderStatusName": "服务已完成",
+        "orderNo": "845275574388687331",
+        "address": "辽宁省大连市甘井子区华东路161号",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://so/new_servicedetail?order_no=845275574388687331",
+        "paymentStatus": "0",
+        "oipStatus": 2,
+        "extendInfo": {
+          "order_finish_info": {
+            "copy_writing": "完成于%s",
+            "finish_time": 1758945290
+          },
+          "expectedServiceTime": "1758852000",
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 1,
+          "maintenance_report_url": "nio://so/new_servicedetail?order_no=845275574388687331",
+          "expected_service_location": {
+            "poi_address": "辽宁省大连市甘井子区华东路161号",
+            "poi_name": "蔚来服务中心 | 大连华南",
+            "poi_latitude": 38.997259,
+            "type": 14,
+            "poi_id": "nio:dealer:DLCCDS1",
+            "poi_longitude": 121.595687,
+            "poi_area": "210211"
+          },
+          "dealer_info": {
+            "dealer_code": "DLCCDS1",
+            "dealer_address": "辽宁省大连市甘井子区华东路161号",
+            "dealer_name": "大连华南"
+          },
+          "pre_inspection_report_url": "nio://so/new_servicedetail?order_no=845275574388687331",
+          "expected_serve_time": 1758852000,
+          "total_fee": "总费用¥ %s",
+          "house_keeper_info": {
+            "house_keeper_name": "隋国峰",
+            "house_keeper_id": "sam.sui"
+          },
+          "compound_status": 10000100,
+          "maintenance_requirement": {
+            "copy_writing": "本次服务需求：%s",
+            "polymerization_maintenance_requirements": [
+              {
+                "code": "20200000",
+                "description": "事故"
+              }
+            ]
+          },
+          "estimated_finish_info": {
+            "installation_copywriting": "预计%s完成安装",
+            "copywriting": "预计%s完成维修",
+            "estimated_finish_time": 1758961320
+          }
+        }
+      },
+      {
+        "orderType": "so_case_accident",
+        "orderName": "事故报案",
+        "createTime": 1758708758000,
+        "orderStatus": "14",
+        "orderStatusName": "已销案",
+        "cashChooseType": "1",
+        "orderNo": "ACS2025092433218GX6F",
+        "address": "虹港路和张前路交叉口",
+        "url": "https://app.nio.com/app/accident_report_h5/module_10120/reportDetail/ACS2025092433218GX6F?isFromSource=oip&is_nav_show=false&wv=lg",
+        "paymentStatus": "1",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "so_case_accident",
+        "orderName": "事故报案",
+        "createTime": 1758708737000,
+        "orderStatus": "14",
+        "orderStatusName": "已销案",
+        "cashChooseType": "1",
+        "orderNo": "ACS2025092417166AQZR",
+        "address": "辽宁省大连市甘井子区虹港路560号",
+        "url": "https://app.nio.com/app/accident_report_h5/module_10120/reportDetail/ACS2025092417166AQZR?isFromSource=oip&is_nav_show=false&wv=lg",
+        "paymentStatus": "1",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "nsom_so_maintenance",
+        "orderName": "一键维保",
+        "createTime": 1758503051000,
+        "orderStatus": "100",
+        "orderStatusName": "服务已完成",
+        "orderNo": "845275303051687461",
+        "address": "辽宁省大连市甘井子区华东路161号",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://so/new_servicedetail?order_no=845275303051687461",
+        "paymentStatus": "0",
+        "oipStatus": 2,
+        "extendInfo": {
+          "order_finish_info": {
+            "copy_writing": "完成于%s",
+            "finish_time": 1758516429
+          },
+          "expectedServiceTime": "1758511800",
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 1,
+          "maintenance_report_url": "nio://so/new_servicedetail?order_no=845275303051687461",
+          "expected_service_location": {
+            "poi_address": "辽宁省大连市甘井子区华东路161号",
+            "poi_name": "蔚来服务中心 | 大连华南",
+            "poi_latitude": 38.997259,
+            "type": 14,
+            "poi_id": "nio:dealer:DLCCDS1",
+            "poi_longitude": 121.595687,
+            "poi_area": "210211"
+          },
+          "dealer_info": {
+            "dealer_code": "DLCCDS1",
+            "dealer_address": "辽宁省大连市甘井子区华东路161号",
+            "dealer_name": "大连华南"
+          },
+          "pre_inspection_report_url": "nio://so/new_servicedetail?order_no=845275303051687461",
+          "expected_serve_time": 1758511800,
+          "total_fee": "总费用¥ %s",
+          "house_keeper_info": {
+            "house_keeper_name": "刘明月",
+            "house_keeper_id": "lacey.liu1"
+          },
+          "compound_status": 10000100,
+          "maintenance_requirement": {
+            "copy_writing": "本次服务需求：%s",
+            "polymerization_maintenance_requirements": [
+              {
+                "code": "20160000",
+                "description": "玻璃",
+                "requirement_items": [
+                  {
+                    "code": "20161000",
+                    "description": "挡风玻璃"
+                  }
+                ]
+              }
+            ]
+          },
+          "estimated_finish_info": {
+            "installation_copywriting": "预计%s完成安装",
+            "copywriting": "预计%s完成维修",
+            "estimated_finish_time": 1758522566
+          }
+        }
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1758082690000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825967274882689473",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967274882689473",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825967274882689473",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "battery_flexible_upgrade",
+        "orderName": "灵活升级",
+        "createTime": 1758082029000,
+        "orderStatus": "1000",
+        "orderStatusName": "服务已完成",
+        "orderNo": "838274882029653110",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://battery_rent/order?order_id=838274882029653110",
+        "buttons": [
+          {
+            "name": "立即评价",
+            "url": "nio://battery_rent/order?order_id=838274882029653110",
+            "code": "peFlexibleUpgradeImmComment",
+            "sort": 2,
+            "type": null,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "4",
+        "pickUpName": "大连甘井子区政府北 蔚来换电站",
+        "returnName": "大连甘井子区政府北 蔚来换电站",
+        "oipStatus": 2,
+        "extendInfo": {
+          "batteryCapSeries": 3,
+          "targetBatteryCapLevel": 2,
+          "pickUpOverdue": false,
+          "returnOverdue": false,
+          "batteryCapLevel": 1,
+          "targetBatteryCapSeries": 2,
+          "paymentInfo": [
+            {
+              "amount": -200,
+              "name": "下单立减",
+              "type": 17
+            },
+            {
+              "amount": 880,
+              "name": "长续航级（100kWh）按月灵活升级费用",
+              "type": 5
+            }
+          ],
+          "payInArrears": false
+        }
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1756785894000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "46.91",
+        "payDesc": "¥ 46.91",
+        "isRight": false,
+        "orderNo": "825967273585893169",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967273585893169",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825967273585893169",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1756609448000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825763273409447457",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连东港国际会议中心 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825763273409447457",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1753069881000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "42.58",
+        "payDesc": "¥ 42.58",
+        "isRight": false,
+        "orderNo": "825967269869880137",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967269869880137",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825967269869880137",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1752562570000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "58.49",
+        "payDesc": "¥ 58.49",
+        "isRight": false,
+        "orderNo": "825967269362569443",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967269362569443",
+        "buttons": [
+          {
+            "name": "评价订单",
+            "url": "nio://pemappowerswap/orderdetail?orderid=825967269362569443",
+            "code": "shamanChangeAppraise",
+            "sort": 1,
+            "type": 0,
+            "toast": null,
+            "badge": ""
+          }
+        ],
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "nsom_so_maintenance",
+        "orderName": "一键维保",
+        "createTime": 1751974790000,
+        "orderStatus": "100",
+        "orderStatusName": "服务已完成",
+        "orderNo": "845268774790679238",
+        "address": "辽宁省大连市甘井子区华东路161号",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "url": "nio://so/new_servicedetail?order_no=845268774790679238",
+        "paymentStatus": "0",
+        "oipStatus": 2,
+        "extendInfo": {
+          "order_finish_info": {
+            "copy_writing": "完成于%s",
+            "finish_time": 1752038946
+          },
+          "expectedServiceTime": "1752030000",
+          "welcome_message": "请耐心等待，正在匹配专员接单",
+          "type": 1,
+          "maintenance_report_url": "nio://so/new_servicedetail?order_no=845268774790679238",
+          "expected_service_location": {
+            "poi_address": "辽宁省大连市甘井子区华东路161号",
+            "poi_name": "蔚来服务中心 | 大连华南",
+            "poi_latitude": 38.997259,
+            "type": 14,
+            "poi_id": "nio:dealer:DLCCDS1",
+            "poi_longitude": 121.595687,
+            "poi_area": "210211"
+          },
+          "dealer_info": {
+            "dealer_code": "DLCCDS1",
+            "dealer_address": "辽宁省大连市甘井子区华东路161号",
+            "dealer_name": "大连华南"
+          },
+          "pre_inspection_report_url": "nio://so/new_servicedetail?order_no=845268774790679238",
+          "expected_serve_time": 1752030000,
+          "total_fee": "总费用¥ %s",
+          "house_keeper_info": {
+            "house_keeper_name": "吕娅妮",
+            "house_keeper_id": "gracr.lv"
+          },
+          "compound_status": 10000100,
+          "maintenance_requirement": {
+            "copy_writing": "本次服务需求：%s",
+            "polymerization_maintenance_requirements": [
+              {
+                "code": "20090000",
+                "description": "其他需求"
+              }
+            ]
+          },
+          "estimated_finish_info": {
+            "installation_copywriting": "预计%s完成安装",
+            "copywriting": "预计%s完成维修",
+            "estimated_finish_time": 1752041295
+          }
+        }
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1751626827000,
+        "orderStatus": "255",
+        "orderStatusName": "已取消，欢迎反馈",
+        "priceCash": "0.00",
+        "isRight": false,
+        "orderNo": "825763268426826424",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连东港国际会议中心 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825763268426826424",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1750391315000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "57.44",
+        "payDesc": "¥ 57.44",
+        "isRight": false,
+        "orderNo": "825967267191314389",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967267191314389",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      },
+      {
+        "orderType": "pe_shaman_change",
+        "orderName": "换电",
+        "createTime": 1749970810000,
+        "orderStatus": "100",
+        "orderStatusName": "换电已完成，已支付",
+        "priceCash": "79.40",
+        "payDesc": "¥ 79.4",
+        "isRight": false,
+        "orderNo": "825967266770809125",
+        "vinCode": "HJNNADMG1SA037294",
+        "vehicleId": "cc9d1b377eaa4f611620092960004010",
+        "resourceAddress": "大连甘井子区政府北 蔚来换电站",
+        "url": "nio://pemappowerswap/orderdetail?orderid=825967266770809125",
+        "paymentStatus": "0",
+        "oipStatus": 2
+      }
+    ],
+    "total": null,
+    "hasMore": false,
+    "lastCursorCreateTime": 1749970810000,
+    "lastCursorId": 132774015
+  },
+  "requestId": "mk-AGyWgGNqMKU2AjcAYGM",
+  "serviceTime": 1781572919060,
+  "resultMsg": "请求成功",
+  "message": null,
+  "uri": "https://otd-app-api.nio.com/api/v1/otd/car/ext/general/serviceOrder/getTabOrder?hash_type=sha256&lang=zh&region=US&tz_offset=28800&nioAppVersion=6.5.3&appVersion=5.31.0&orderConfVersion=5.31.0&app_ver=6.5.3&offset=0&limit=200&orderTypes=pe_shaman%2Cpe_shaman_change%2Cservice_pe_discharge%2Cbattery_flexible_upgrade%2Cnsom_so_maintenance%2Cnsom_so_chauffeur%2Cchauffeur_vehicle_delivery%2Cso_case_accident&inProgressStatus=false&pagination_method=2&app_id=1100367&timestamp=1781572918541&sign=ec4cd1c297d85c9232898ea407113c5d285461f5f0f2d5bd9c38e9399bb852ba",
+  "atime": {
+    "spending": 542
+  }
+}

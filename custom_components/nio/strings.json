@@ -1,0 +1,223 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "NIO integration",
+        "description": "Choose what to connect. Vehicle status and battery-swap history use different API endpoints — add them separately. Vehicle can run on its own; swap history is optional.",
+        "menu_options": {
+          "vehicle": "Vehicle status",
+          "change": "Battery swap / service orders (optional)"
+        }
+      },
+      "vehicle": {
+        "title": "Connect your NIO vehicle",
+        "description": "Sniff one vehicle-status request from the NIO app (MITM proxy: icar.nio.com/api/2/rvs/vehicle/.../status) and paste the whole request URL below, plus its Authorization Bearer token. The URL is replayed exactly as captured — don't edit it.",
+        "data": {
+          "capture": "Captured status request URL (the whole .../status?... line)",
+          "token": "Bearer token (Authorization header)",
+          "model": "Vehicle model"
+        }
+      },
+      "change": {
+        "title": "Connect NIO service orders",
+        "description": "Sniff the getTabOrder request from Postman or the NIO app (gateway-front-external.nio.com/.../serviceOrder/getTabOrder?...). Paste the full URL (POST with query params is typical), Bearer token, and Cookie if your capture includes it.",
+        "data": {
+          "capture": "Captured getTabOrder request URL",
+          "token": "Bearer token (Authorization header)",
+          "change_name": "Display name",
+          "cookie": "Cookie header (optional)",
+          "change_method": "HTTP method"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate NIO",
+        "description": "Paste a fresh Bearer token. If the signature was rejected (vehicle) or the URL changed, also paste a newly captured request URL.",
+        "data": {
+          "token": "Bearer token (Authorization header)",
+          "capture": "Captured request URL (optional — only if re-sniffed)",
+          "cookie": "Cookie header (optional, service orders only)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "The NIO API rejected the token. Re-sniff a fresh Bearer token.",
+      "invalid_sign": "The NIO API rejected the signature, not the token — re-sniff a current vehicle status request.",
+      "invalid_url": "Couldn't parse that as a vehicle status request. Paste the whole .../status?...&sign=... line.",
+      "invalid_change_url": "Couldn't parse that as a service-order request. Paste the getTabOrder URL with query params.",
+      "cannot_connect": "Could not reach the NIO API."
+    },
+    "abort": {
+      "already_configured": "This entry is already configured.",
+      "reauth_successful": "Re-authentication was successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "NIO options",
+        "menu_options": {
+          "intervals": "Polling cadence",
+          "credentials": "Credentials (token)",
+          "interval": "Polling interval"
+        }
+      },
+      "intervals": {
+        "title": "Polling cadence",
+        "description": "Polling the private API too aggressively can get the token rate-limited or invalidated.",
+        "data": {
+          "interval_driving": "Interval while driving (minutes)",
+          "interval_day": "Daytime interval (minutes)",
+          "interval_night": "Night interval (minutes)",
+          "day_start_hour": "Daytime starts at (hour)",
+          "day_end_hour": "Daytime ends at (hour)"
+        }
+      },
+      "interval": {
+        "title": "Service-order polling",
+        "description": "How often to refresh swap and service-order history.",
+        "data": {
+          "change_interval": "Polling interval (minutes)"
+        }
+      },
+      "credentials": {
+        "title": "Update credentials",
+        "description": "Paste a fresh Bearer token. To refresh the captured request too, paste a newly captured URL.",
+        "data": {
+          "token": "Bearer token (Authorization header)",
+          "capture": "Captured request URL (optional — only if re-sniffed)",
+          "cookie": "Cookie header (optional, service orders only)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "The NIO API rejected the token. Re-sniff a fresh Bearer token.",
+      "invalid_sign": "The NIO API rejected the signature — re-sniff a current vehicle status request.",
+      "invalid_url": "Couldn't parse that as a vehicle status request.",
+      "invalid_change_url": "Couldn't parse that as a service-order request.",
+      "cannot_connect": "Could not reach the NIO API."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "battery": { "name": "Battery" },
+      "remaining_range": { "name": "Range (CLTC)" },
+      "remaining_actual_range": { "name": "Range (actual)" },
+      "range_achievement_rate": { "name": "Range achievement rate" },
+      "vehicle_state": {
+        "name": "Vehicle state",
+        "state": {
+          "driving": "Driving",
+          "parked": "Parked",
+          "resting": "Resting",
+          "unknown": "Unknown"
+        }
+      },
+      "charging_power": { "name": "Charging power" },
+      "inside_temperature": { "name": "Inside temperature" },
+      "outside_temperature": { "name": "Outside temperature" },
+      "mileage": { "name": "Mileage" },
+      "tyre_pressure_front_left": { "name": "Tyre pressure front left" },
+      "tyre_pressure_front_right": { "name": "Tyre pressure front right" },
+      "tyre_pressure_rear_left": { "name": "Tyre pressure rear left" },
+      "tyre_pressure_rear_right": { "name": "Tyre pressure rear right" },
+      "fota_version": { "name": "Firmware version" },
+      "alerts": { "name": "Alerts" },
+      "charge_state": {
+        "name": "Charge state",
+        "state": {
+          "not_charging": "Not charging",
+          "charging": "Charging",
+          "complete": "Complete",
+          "fault": "Fault"
+        }
+      },
+      "full_charge_range": { "name": "Full charge range" },
+      "battery_pack": {
+        "name": "Battery pack",
+        "state": {
+          "75kwh": "75 kWh",
+          "100kwh": "100 kWh",
+          "unknown": "Unknown"
+        }
+      },
+      "checked_in_days": { "name": "Consecutive driving days" },
+      "steer_wheel_heat": {
+        "name": "Steering wheel heat",
+        "state": {
+          "off": "Off",
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High"
+        }
+      },
+      "seat_heat_front": {
+        "name": "Front seat heat",
+        "state": {
+          "off": "Off",
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High"
+        }
+      },
+      "seat_heat_rear": {
+        "name": "Rear seat heat",
+        "state": {
+          "off": "Off",
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High"
+        }
+      },
+      "seat_ventilation": {
+        "name": "Seat ventilation",
+        "state": {
+          "off": "Off",
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High"
+        }
+      },
+      "maintenance": { "name": "Maintenance" },
+      "service_orders_total": { "name": "Service orders" },
+      "swap_completed": { "name": "Battery swaps completed" },
+      "swap_cancelled": { "name": "Battery swaps cancelled" },
+      "swap_spent": { "name": "Battery swap spend" },
+      "swap_avg_spent": { "name": "Battery swap average spend" },
+      "upgrade_completed": { "name": "Flexible upgrades completed" },
+      "upgrade_spent": { "name": "Flexible upgrade spend" },
+      "last_service_order": { "name": "Last service order" }
+    },
+    "binary_sensor": {
+      "driving": { "name": "Driving" },
+      "sleeping": { "name": "Sleeping" },
+      "door": { "name": "Doors" },
+      "window": { "name": "Windows" },
+      "lock": { "name": "Lock" },
+      "charging": { "name": "Charging" },
+      "connected": { "name": "Cloud connection" },
+      "alert_active": { "name": "Alert active" },
+      "battery_critical": { "name": "Battery critical" },
+      "battery_low": { "name": "Battery low" },
+      "adc_offline": { "name": "ADC offline" },
+      "cdc_connected": { "name": "CDC connected" },
+      "maintenance_due": { "name": "Maintenance due" },
+      "server_alarm": { "name": "Server alarm" },
+      "air_conditioner": { "name": "Air conditioner" },
+      "hood": { "name": "Frunk" },
+      "tailgate": { "name": "Tailgate" },
+      "charge_port": { "name": "Charge port" },
+      "pet_mode": { "name": "Pet mode" },
+      "power_hold_mode": { "name": "Power hold mode" },
+      "camping_mode": { "name": "Camping mode" },
+      "defender_mode": { "name": "Defender mode" },
+      "remote_video": { "name": "Remote video" }
+    },
+    "device_tracker": {
+      "location": { "name": "Location" }
+    },
+    "button": {
+      "refresh": { "name": "Refresh data" },
+      "refresh_change": { "name": "Refresh service orders" }
+    }
+  }
+}
