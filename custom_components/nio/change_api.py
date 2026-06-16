@@ -66,6 +66,7 @@ class NioChangeApiClient:
             self._headers["mobileinfo"] = mobileinfo
         if cookie:
             self._headers["Cookie"] = cookie
+        self.last_meta: dict[str, Any] = {}
 
     async def async_get_orders(self) -> dict[str, Any]:
         """Fetch service orders; return the full JSON payload."""
@@ -92,6 +93,11 @@ class NioChangeApiClient:
         code = payload.get("resultCode") or payload.get("result_code")
         if code in ("0000", "success"):
             count = len(extract_orders(payload))
+            self.last_meta = {
+                "http_status": status,
+                "method": self._method,
+                "order_count": count,
+            }
             _LOGGER.debug(
                 "NIO change API ok (HTTP %s, resultCode=%s, orders=%s)",
                 status,
@@ -100,8 +106,11 @@ class NioChangeApiClient:
             )
             if count == 0:
                 _LOGGER.warning(
-                    "NIO change API returned 0 orders — check the full Postman URL "
-                    "(all Params in query string) and Bearer token"
+                    "NIO change API returned 0 orders (HTTP %s %s, resultCode=%s) — "
+                    "check the full Postman URL (all Params in query string) and Bearer token",
+                    status,
+                    self._method,
+                    code,
                 )
             return payload
 
@@ -113,6 +122,12 @@ class NioChangeApiClient:
             or str(code)
         )
         codestr = str(code or "").lower()
+        self.last_meta = {
+            "http_status": status,
+            "method": self._method,
+            "order_count": 0,
+            "api_error": desc,
+        }
         if status in (401, 403) or "auth" in codestr or "token" in codestr:
             raise NioChangeAuthError(
                 f"Service-order API rejected credentials (HTTP {status}, {desc})"

@@ -20,7 +20,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .change_coordinator import NioChangeConfigEntry, NioChangeDataUpdateCoordinator
 from .change_data import ServiceSummary, extract_orders
 from .change_entity import NioChangeEntity
-from .const import CONF_ENTRY_TYPE, ENTRY_TYPE_CHANGE
+from .const import CONF_CHANGE_METHOD, CONF_ENTRY_TYPE, ENTRY_TYPE_CHANGE
 
 
 def _summary(coordinator: NioChangeDataUpdateCoordinator) -> ServiceSummary | None:
@@ -138,7 +138,20 @@ class NioChangeSensor(NioChangeEntity, SensorEntity):
         if self.entity_description.key != "service_orders_total":
             return None
         payload = self.coordinator.data or {}
+        orders = extract_orders(payload)
+        meta = getattr(self.coordinator.client, "last_meta", {}) or {}
+        entry = self.coordinator.config_entry
         return {
             "api_result_code": payload.get("resultCode") or payload.get("result_code"),
-            "raw_order_count": len(extract_orders(payload)),
+            "api_result_desc": payload.get("resultDesc") or payload.get("result_desc"),
+            "raw_order_count": len(orders),
+            "swap_order_count": sum(
+                1 for o in orders if o.get("orderType") == "pe_shaman_change"
+            ),
+            "http_status": meta.get("http_status"),
+            "http_method": meta.get("method")
+            or entry.data.get(CONF_CHANGE_METHOD, "POST"),
+            "has_result_data": any(
+                isinstance(payload.get(key), dict) for key in ("resultData", "result_data")
+            ),
         }

@@ -169,8 +169,14 @@ Swap history uses a different endpoint
 > [!TIP]
 > If all swap sensors read 0, the URL was probably **pasted without its query
 > params** (everything after `?`) or the **token doesn't match**. Open the
-> `Service orders` sensor and check the `raw_order_count` attribute (> 0) and
-> `api_result_code` (should be `0000`).
+> `Service orders` sensor and check:
+> - `api_result_code` is `0000` (success)
+> - `http_status` is `200`, `http_method` is `POST`
+> - `raw_order_count` > 0 (orders returned by the API)
+> - `swap_order_count` is battery-swap orders only (`service_orders_total` includes maintenance, etc.)
+>
+> Tap **Refresh service orders**, then re-check attributes; or enable
+> `custom_components.nio.change_api: debug` in `configuration.yaml` and read the HA log.
 
 ## Notes
 
